@@ -1,5 +1,7 @@
 # little-network-toolkit (LNTk)
-A bunch of script to use. Feel free to use.
+***work in progress***
+
+A bunch of scripts b to import, save, manipulate and render undirected graph. Feel free to use.
 
 ## Dependencies
 
@@ -9,9 +11,9 @@ There programs can be found using the *apt-get* command or the equivalent on you
 
 - Xvfb
 
-### Python
+### Python libraries
 
-These are can be installed with the command *python setup.py*
+These can be installed with the command *python setup.py build*
 
 - Networkx
 - Selenium
@@ -26,40 +28,56 @@ These are can be installed with the command *python setup.py*
 
 ## Details
 
-- Networkx graph are saved with pickle and with the extension ".nx".
+### .nx
+
+Networkx graph are saved with *pickle* and with the extension ".nx". They can be import in the following way :
+
+    import pickle
+    graph = pickle.load("mygraph.nx")
+
+### CSV to networkx
+
+Two csv are required to get a networkx graph. The first provided csv defines the nodes. Its first columns is
+
+By default, it is assumed that first line of the csv is a header containning the columns ids. If it is not the case, the flag --noheader can be passed to the command line util.
+
+ The created graph is defined as
+
+
+
+
 - CSVs can have extra data columns which will transfer to networkx node and edge attributes
--
 
 ## Usages
 
 ### Command line use
 
-Here is listed all the command line possible use cases.
+Here is listed all the command line use cases.
 
 #### Parse csv to networkx
 
-    lntk -i <node_list>.csv <edge_list>.csv -o <output_file>.nx
+    lntk-parser -i <node_list>.csv <edge_list>.csv -o <output_file>.nx [--header]
 
 #### Parse networkx to csv
 
-    lntk -i <input_file>.nx -o <output_node_list>.csv <output_edge_list>.csv
-
-#### csv to png
-
-    lntk -i <node_list>.csv <edge_list>.csv  -o <output_file>.png [-l layout_preset] [-s style_preset]
+    lntk-parser -i <input_file>.nx -o <output_node_list>.csv <output_edge_list>.csv [--header]
 
 #### networkx to png
 
-    lntk -i <input_file>.nx  -o <output_file>.png [-l layout_preset] [-s style_preset]
+    lntk-viz -i <networkx_input_file>  -o <output_file>.png [-c display_config]
 
 #### List of networkx graph to gif
 
-    lntk -i <network1>.nx <network2>.nx <network3>.nx -o <output_file>.gif [-l layout_preset] [-s style_preset]
+    lntk-viz -i <networkx_file1> <networkx_file2> <networkx_file3> -o <output_file>.gif [-l layout_preset] [-c display_config]
 
-### Available layout and style preset
+### Display configuration
+
+The display configuration is a json that defines layout and style of
+
+Layout and style configuration
 
 - preset layouts are : ('grid','null','random','preset','circle','concentric','breadthfirst','cose','hexagon')
-- style presets are :
+- style presets are : V:node_size
 
 ### Library use
 
