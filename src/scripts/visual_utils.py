@@ -52,7 +52,7 @@ def graph_sequence_to_gif(output_filename, graph_list,layout=default_layout):
     # Todo : validate given layout
 
 
-    tmp_template = "tmp/"
+    tmp_template = ""
     temp_files_list = []
     for G in graph_list:
         temp_filename = tmp_template+ uuid.uuid4().hex
@@ -214,7 +214,9 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
     style = """ shape: '{layout}',
         'background-color': 'red'
             """.format(layout=shape)
-    cytoscape_library = open("../static/js/cytoscape.js-2.7.10",'r').read()
+    import os
+    print(os.getcwd())
+    cytoscape_library = open("../static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
 
     # Set script path sur based on working directory?
     # src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
