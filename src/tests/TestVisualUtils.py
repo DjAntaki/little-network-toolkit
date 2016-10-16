@@ -28,7 +28,7 @@ class TestGif(unittest.TestCase):
 
     def tearDown(self):
         #Check if it has been created first?
-        os.remove("test.gif")
+        os.remove("tmp/test.gif")
 
     def test_make_gif(self):
         visual_utils.graph_sequence_to_gif("test.gif", self.graphs)

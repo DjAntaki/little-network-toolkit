@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 
 default_layout = {"shape":"hexagon"}
-ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose','hexagone')
+ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose','hexagon')
 
 def reverse_gif(filename):
     """
-    Given a gif composed of a sequence of fixed-duration frames and tha
-
+    unused.
     taken from http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python
-
     """
     from PIL import Image, ImageSequence
-    from images2gif import writeGif
+#    from images2gif import writeGif
     import sys, os
     filename = sys.argv[1]
     im = Image.open(filename)
@@ -23,27 +21,30 @@ def reverse_gif(filename):
 
 def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
     from PIL import Image
-    from images2gif import writeGif
+#    from images2gif import writeGif
+    from src.static.python import images2gif
     image_list = []
 
     for filepath in png_filepath_list:
         image_list.append(Image.open(filepath))
 
 
-    writeGif(output_filename, image_list, duration=duration)
+    images2gif.writeGif(output_filename, image_list, duration=duration)
 
     print("Done!")
 
 def make_gif_from_png_base64(output_filename, png_b64_list, duration=2):
-    from images2gif import writeGif
+    #from images2gif import writeGif
+    from src.static.python import images2gif
+
     image_list = list(map(b64toImage,png_b64_list))
-    writeGif(output_filename, image_list, duration=duration)
+    images2gif.writeGif(output_filename, image_list, duration=duration)
     print("Done!")
 
 def make_gif_from_image_list(output_filename, image_list, duration=2):
-    from images2gif import writeGif
-    writeGif(output_filename, image_list, duration=duration)
-
+#    from images2gif import writeGif
+    from src.static.python import images2gif
+    images2gif.writeGif(output_filename, image_list, duration=duration)
 
 def graph_sequence_to_gif(output_filename, graph_list,layout=default_layout):
     import uuid
@@ -51,7 +52,7 @@ def graph_sequence_to_gif(output_filename, graph_list,layout=default_layout):
     # Todo : validate given layout
 
 
-    tmp_template = "tmp/"
+    tmp_template = ""
     temp_files_list = []
     for G in graph_list:
         temp_filename = tmp_template+ uuid.uuid4().hex
@@ -213,11 +214,15 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
     style = """ shape: '{layout}',
         'background-color': 'red'
             """.format(layout=shape)
+    import os
+    print(os.getcwd())
+    cytoscape_library = open("../static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
 
     # Set script path sur based on working directory?
+    # src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
+
     html_template =  """<!doctype html>
-<script src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
-<html>
+<script>""" +cytoscape_library+ """</script><html>
 
 <head>
     <title>Rendered Network</title>
@@ -232,7 +237,6 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
         left: 0px;
     }
 </style>
-
 <body>
     <div id="cy"></div>
 </body>
@@ -275,7 +279,7 @@ if __name__ == "__main__":
                         help='sum the integers (default: find the max)')
 
     args = parser.parse_args()
-    print args.accumulate(args.integers)
+#    print args.accumulate(args.integers)
 
 
 
