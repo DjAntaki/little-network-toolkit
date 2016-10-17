@@ -2,9 +2,10 @@ language: python
 python :
 - "2.7"
 
+addons: 
+  firefox: latest
 build: "python setup.py build"
 # command to install dependencies
 install: "python setup.py install"
 # command to run tests
 script: "nosetests src/tests/"
-addons: firefox: "50.0"
