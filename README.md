@@ -7,10 +7,11 @@ A bunch of scripts b to import, save, manipulate and render undirected graph. Fe
 
 ### Programs
 
-There programs can be found using the *apt-get* command or the equivalent on your distribution.
-
 - Xvfb
 
+
+- Firefox
+- Geckodriver  : https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-arm7hf.tar.gz
 ### Python libraries
 
 These can be installed with the command *python setup.py build*

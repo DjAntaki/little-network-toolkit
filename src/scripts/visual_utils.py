@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-default_layout = {"shape":"hexagon"}
-ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose','hexagon')
+default_options = {"layout": "hexagon"}
+ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
 def reverse_gif(filename):
     """
@@ -46,7 +46,7 @@ def make_gif_from_image_list(output_filename, image_list, duration=2):
     from src.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-def graph_sequence_to_gif(output_filename, graph_list, layout=default_layout, tmp_location=""):
+def graph_sequence_to_gif(output_filename, graph_list, layout=default_options, tmp_location=""):
     import uuid
 #    from gif import make_gif
     # Todo : validate given layout
@@ -160,35 +160,88 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
     xvfb.stop()
     return png_images
 
-def _generate_layout_cytoscape(options):
-    """handles the preset options"""
+# Valid node shape : rectangle, roundrectangle, ellipse, triangle, pentagon, hexagon, heptagon, octagon, star, diamond, vee, rhomboid
+
+##
+## Options :
+##  -- add callback options
+##  -- replace this by cytoscape style sheets
+
+def _generate_stylesheet_cytoscape(G, options):
+    """
+
+    Handles the preset layout and style options. For further information, see documentation.
+
+    :param options : a dictionnary indicating the layout and style to apply.
+    """
 #    http: // js.cytoscape.org /  # cy.makeLayout
-    #Todo
+
+    if "shape" in options.keys():
+        shape = options['shape']
+    else :
+        shape = "hexagon"
+
+    node_size_option = ""
+    if "node_size" in options.keys():
+        opt = options["node_size"]
+        if opt == "betweeness":
+            pass
+        elif opt == "connectivity":
+            pass #todo : todo todo
+        elif opt == "":
+            pass
+        else :
+            raise Exception("The option "+str(opt)+" for node size is unknowned.")
+
+        node_size_option = """,
+                'width':'data("""+opt+""")',
+                'height':'data("""+opt+")'"
+
+    node_style = """
+        {selector: 'node',
+         style: {"""+"""shape: '{shape}',
+                'background-color': 'red'{node_size_option}
+         """.format(shape=shape,node_size_option=node_size_option) + "}\n}"
+
+    style = node_style
+
+    if "edge_width" in options.keys():
+        opt = options["edge_width"]
+        if opt == "betweeness":
+            pass
+        else :
+            raise Exception("The option " + str(opt) + " for edge width is unknowned.")
+
+        edge_style = """
+        {selector: 'edge',
+        style : {"""
+        + """'width': '' """.format() + "}\n}"
+
+        # todo
+
+    if "background-opacity" in options.keys():
+        extra_style = """,
+        {
+          selector: ':parent',
+          style: {
+            'background-opacity': {opacity}
+          }
+        }""".format(opacity=options["background-opacity"])
+
+    return style
 
 
-    pass
-
-def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbose=True):
-    """
-    Take in input a network
-
-    For now, all generated graph are undirected.
-
-    Some predefined layout are located in the visual_utils.py file.
-    More to come.
-
-    :param graph:
-    :param output_filename:
-    :param layout:
-    :param verbose: print extra details if true.
-    :return:
-    """
-
-    shape = layout['shape']
-    assert shape in ALL_CYTOSCAPE_PRESET_LAYOUTS
-    if shape == 'preset':
+def _generate_layout_cytoscape(options):
+    assert "layout" in options
+    opt = options["layout"]
+    assert opt in ALL_CYTOSCAPE_PRESET_LAYOUTS
+    if opt == 'preset':
         raise NotImplementedError()
 
+
+    return "layout: {name: '{opt}'}".format(opt=opt)
+
+def _generate_element_list_cytoscape(graph, options,verbose=False):
     node_id_list = graph.nodes()
     edges_id_list = graph.edges()
 
@@ -210,9 +263,29 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
     if len(elements) > 0:
         elements = elements[:-1]
 
-    style = """ shape: '{layout}',
-        'background-color': 'red'
-            """.format(layout=shape)
+    return elements
+
+def networkx_to_cytoscape_html(output_filename, graph, options=default_options, verbose=False):
+    """
+    This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).
+
+    option is a dictionnary in which the key 'layout' must be present.
+
+    - For now, all generated graph are undirected.
+
+    :param graph:
+    :param output_filename:
+    :param options:
+    :param verbose: print extra details if true.
+    :return:
+    """
+
+    style = _generate_stylesheet_cytoscape(graph, options)
+
+    layout = _generate_layout_cytoscape(options)
+
+    elements = _generate_element_list_cytoscape(graph, options,verbose)
+
     import os
     print(os.getcwd())
     cytoscape_library = open("./src/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
@@ -244,13 +317,8 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
   var cy = cytoscape({
     container: document.getElementById('cy'),
     elements: ["""+elements+"""],
-      style: [
-    {
-        selector: 'node',
-        style: {
-"""+style+"""
-      }
-    }]
+      style: ["""+style+"""],
+      layout:["""+layout+"""]
   });
 </script>
 """
@@ -267,29 +335,17 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='visual utils scripts')
     parser.add_argument('input', metavar='i', type=str,
-                        help='The path to the network(s) in input. Format has to be specified between .csv, .nx, .html or .gif' )
+                        help='The path to the network(s) in input. File(s) in input must be binary-writted pickled networkx instance(s).' )
     parser.add_argument('output', metavar='o', type=str,
-                        help='The desired output location. Format has to be specified between .csv, .nx, .html or .gif')
+                        help='The desired output location. Format has to be specified between .html, .png or .gif')
 
-    parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                        help='an integer for the accumulator')
-    parser.add_argument('--sum', dest='accumulate', action='store_const',
-                        const=sum, default=max,
-                        help='sum the integers (default: find the max)')
+    #todo add layout
+
+#    parser.add_argument('integers', metavar='N', type=int, nargs='+',
+#                        help='an integer for the accumulator')
+#    parser.add_argument('--sum', dest='accumulate', action='store_const',
+#                        const=sum, default=max,
+#                        help='sum the integers (default: find the max)')
 
     args = parser.parse_args()
 #    print args.accumulate(args.integers)
-
-
-
-
-#import subprocess
-#subprocess.call(["python","/bin/webkit2png","http://bReNdAdIcKsOn.com"])
-
-#subprocess.call(["python", "webkit2png.py", link])
-
-#"--output "+out_filename
-
-# https://pypi.python.org/pypi/xvfbwrapper/0.2.7
-#http://blog.js.cytoscape.org/2016/05/24/getting-started/
-#http://html2canvas.hertzen.com/examples.html

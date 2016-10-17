@@ -3,8 +3,13 @@ python :
 - "2.7"
 
 build: "python setup.py build"
+
+#
+before_install: "."
+
 # command to install dependencies
 install: "python setup.py install"
+
 # command to run tests
 script: "nosetests src/tests/"
 
