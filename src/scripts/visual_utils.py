@@ -46,16 +46,15 @@ def make_gif_from_image_list(output_filename, image_list, duration=2):
     from src.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-def graph_sequence_to_gif(output_filename, graph_list,layout=default_layout):
+def graph_sequence_to_gif(output_filename, graph_list, layout=default_layout, tmp_location=""):
     import uuid
 #    from gif import make_gif
     # Todo : validate given layout
 
 
-    tmp_template = ""
     temp_files_list = []
     for G in graph_list:
-        temp_filename = tmp_template+ uuid.uuid4().hex
+        temp_filename = tmp_location+ uuid.uuid4().hex
         networkx_to_cytoscape_html(G,temp_filename,layout)
         temp_files_list.append(temp_filename)
 
@@ -216,7 +215,7 @@ def networkx_to_cytoscape_html(graph,output_filename,layout=default_layout,verbo
             """.format(layout=shape)
     import os
     print(os.getcwd())
-    cytoscape_library = open("../static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
+    cytoscape_library = open("./src/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
 
     # Set script path sur based on working directory?
     # src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
