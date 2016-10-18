@@ -1,17 +1,37 @@
-# little-network-toolkit (LNTk)
+# Little Network Toolkit (LNTk)
 ***work in progress***
 
-A bunch of scripts b to import, save, manipulate and render undirected graph. Feel free to use.
+A collection of scripts to import, save, manipulate and render undirected graph. Feel free to use.
+
+## Content
+
+- Parse csv to networkx
+- Parse networkx graph to html file using layout functionnality of cytoscape 2.7.10
+- Save that networkx graph to png
+- Can create a gif from a list of networkx graph
+
+
+
 
 ## Dependencies
 
 ### Programs
 
-- Xvfb
+- Xvfb : sudo apt-get install xvfb
+- Geckodriver  : npm install geckodriver
+
+(if npm or nodejs is not installed on your machine : sudo apt-get install npm nodejs)
+
+Then, make sure you that geckodriver is in your path. If it is not, look into nodejs "node_modules" directory and use the command :
+
+ export PATH=$PATH:/path/to/geckodriver/direction
 
 
-- Firefox
-- Geckodriver  : https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-arm7hf.tar.gz
+Alternatively, geckodriver can be download https://github.com/mozilla/geckodriver/releases/
+
+
+
+
 ### Python libraries
 
 These can be installed with the command *python setup.py build*
@@ -20,21 +40,14 @@ These can be installed with the command *python setup.py build*
 - Selenium
 - Xvfbwrapper
 
-## Content
-
-- Parse csv to networkx
-- Parse networkx to (undirected) html file using preset layout of cytoscape 2.7.10
-- Save that networkx graph to *png*
-- Can create a gif from a list of networkx graph
-
 ## Details
 
 ### .nx
 
-Networkx graph are saved with *pickle* and with the extension ".nx". They can be import in the following way :
+Networkx graph are saved with *pickle* and with the extension. They can be import in the following way :
 
     import pickle
-    graph = pickle.load("mygraph.nx")
+    graph = pickle.load("./mygraph")
 
 ### CSV to networkx
 
@@ -57,7 +70,7 @@ Here is listed all the command line use cases.
 
 #### Parse csv to networkx
 
-    lntk-parser -i <node_list>.csv <edge_list>.csv -o <output_file>.nx [--header]
+    lntk-csvparser <node_list_csv> <edge_list_csv> <output_networkx_file> [--header]
 
 #### Parse networkx to csv
 
@@ -73,19 +86,23 @@ Here is listed all the command line use cases.
 
 ### Display configuration
 
-The display configuration is a json that defines layout and style of
+The display configuration is a json that defines layout and style of the graph. Here is a list of all interpretable key and the values they can take.
 
-Layout and style configuration
+- "layout":('grid','null','random','circle','concentric','breadthfirst','cose','hexagon')
+- "node_size":["betweeness","closeness","connectivity"]
+- "edge_width":["betweeness"]
+- "shape":["rectangle", "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid"]}
 
-- preset layouts are : ('grid','null','random','preset','circle','concentric','breadthfirst','cose','hexagon')
-- style presets are : V:node_size
+In that sense, the following is a valid display configuration :
+
+    {'layout':'cose',
+     'node_size':'betweeness'}
 
 ### Library use
 
-The scripts can be accessed in an python interpreter with the *import LNTk*. This allows access to all scripts, including the network manipulation scripts which aren't accessible from the command line.
+The scripts can be accessed in an python interpreter with the command *import LNTk*. This allows access to all scripts, including the network manipulation scripts which aren't accessible from the command line.
 
 To open a graph in a browser :
 
     import LNTk
-
-    LNTk.visual_utils.render_html()
+    LNTk.visual_utils.render_html(graph)

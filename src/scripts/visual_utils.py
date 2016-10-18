@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from src.scripts import analytics
 default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
@@ -26,6 +27,14 @@ def reverse_gif(filename):
     writeGif("reverse_" + os.path.basename(filename), frames, duration=original_duration/1000.0, dither=0)
 
 def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
+    """
+    Given a list of png file path in entry, this function creates a gif showing those png sucessively for a fixed number of time and save it at the given file path.
+
+    :param output_filename:
+    :param png_filepath_list:
+    :param duration:
+    :return:
+    """
     from PIL import Image
 #    from images2gif import writeGif
     from src.static.python import images2gif
@@ -52,26 +61,6 @@ def make_gif_from_image_list(output_filename, image_list, duration=2):
     from src.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_option, tmp_location=""):
-    import uuid
-#    from gif import make_gif
-    # Todo : validate given layout
-
-
-    temp_files_list = []
-    for G in graph_list:
-        temp_filename = tmp_location+ uuid.uuid4().hex
-        networkx_to_cytoscape_html(temp_filename, G, visual_config)
-        temp_files_list.append(temp_filename)
-
-    png_images_bytearrays = html_to_png(temp_files_list,save=False)
-
-    make_gif_from_png_base64(output_filename, png_images_bytearrays, duration=2)
-
-    import os
-    for temp_file in temp_files_list:
-        os.remove(temp_file)
-
 
 def render_html(file_location):
     """open a Firefox browser with the given graph, returns the selenium browser instance."""
@@ -90,18 +79,17 @@ def b64toImage(base64_input):
     import io
     from PIL import Image
     import base64
-
+    print(len(base64_input))
     bytes = base64.b64decode(base64_input)
     return Image.open(io.BytesIO(bytes))
 
 
-def save_png(base64_input,output_file):
+def save_png(base64_input, output_file):
     """
-
     :param base64: a base 64 encoded unicode string representing a png image
     :param output_file: the path where the image will be saved.
     """
-
+    print(len(base64_input))
     image = b64toImage(base64_input)
     image.save(output_file)
 
@@ -112,6 +100,7 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
 
     N.B. Common possible error :
             - (variable cy not found) can be caused by unvalidity of the source of the cytoscape.js in the html file.
+            - ()
 
     :param filepaths: can be one or a list of path to html network files. absolute and relative path are supported.
     :param width: the image width
@@ -151,14 +140,19 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
         if f[0] != '/':
             f = os.path.join(abspath,f)
         print("File : "+f)
+        b64image = cast_html_to_png(f)
 
-        png_images.append(cast_html_to_png(f))
+#        print(b64image)
+        print(len(b64image))
+        png_images.append(b64image)
+        print(len(png_images))
+        print(len(png_images[-1]))
 
         if save :
             if len(f)>5 and f[-5:] == ".html":
                 f = f[:-5]
             f += ".png"
-
+            print(len(png_images[-1]))
             print(f)
             save_png(png_images[-1],f)
 
@@ -166,19 +160,15 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
     xvfb.stop()
     return png_images
 
-# Valid node shape : rectangle, roundrectangle, ellipse, triangle, pentagon, hexagon, heptagon, octagon, star, diamond, vee, rhomboid
-
-##
 ## Options :
 ##  -- add callback options
 ##  -- replace this by cytoscape style sheets
 
 def _generate_stylesheet_cytoscape(G, options):
     """
+    Handles the layout and style options. For further information, see documentation.
 
-
-    Handles the preset layout and style options. For further information, see documentation.
-
+    :param G : a networkx graph instance.
     :param options : a dictionnary indicating the layout and style to apply.
     """
 #    http: // js.cytoscape.org /  # cy.makeLayout
@@ -190,7 +180,6 @@ def _generate_stylesheet_cytoscape(G, options):
 
     node_size_option = ""
     if "node_size" in options.keys():
-        from src.scripts import analytics
         opt = options["node_size"]
         if opt == "betweeness":
             analytics.compute_node_betweeness(G)
@@ -222,8 +211,7 @@ def _generate_stylesheet_cytoscape(G, options):
 
         edge_style = """,
         {selector: 'edge',
-        style : {"""
-        + """'width': 'data({id})' """.format(id=opt) + "}\n}"
+        style : {""" + "'width': 'data({id})' ".format(id=opt) + "}\n}"
         style += edge_style
 
 
@@ -261,14 +249,21 @@ def _generate_element_list_cytoscape(graph, options,verbose=False):
 
     elements = ""
     for n in node_id_list:
-        elements += "\n{ data: { id: '"+str(n)+"' } },"
+        elements += "\n{ data: { id: '"+str(n)+"'"
+        for key,attribute in graph.node[n].items():
+            elements += ",\n"+key+":"+str(attribute)
+        elements += " } },"
 
     for u,v in edges_id_list:
         elements += """\n{
     data: {"""+"""
       id: '{source_id}{target_id}',
       source: '{source_id}',
-      target: '{target_id}'\n""".format(source_id=u,target_id=v) +"}\n},"
+      target: '{target_id}'\n""".format(source_id=u,target_id=v)
+        for key,attribute in graph[u][v].items():
+            elements += ",\n"+key+":"+str(attribute)
+        elements += "}\n},"
+
 
     if len(elements) > 0:
         elements = elements[:-1]
@@ -343,18 +338,25 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description='visual utils scripts')
+    parser = argparse.ArgumentParser(description='LNTk visual utilities scripts')
     parser.add_argument('input', metavar='i', type=str,
-                        help='The path to the network(s) in input. File(s) in input must be binary-writted pickled networkx instance(s).' )
+                        help='The path to the network in input. File in input must be binary-writted pickled networkx instance.' )
     parser.add_argument('output', metavar='o', type=str,
-                        help='The desired output location. Format has to be specified between .html, .png or .gif')
-    parser.add_argument('configuration', metavar='c', type=str, default=None,
-                        help='The path to the layout and style configuration json file.')
+                        help='The desired output location.')
+    parser.add_argument('output_type',metavar='t',type=str ,default='png',
+                        help="The desired output type. Either 'html' or 'png'.")
+
+    parser.add_argument('configuration', metavar='c', type=str, default=None,nargs='?', help='The path to the layout and style configuration json file.')
 
     args = parser.parse_args()
-    print(args)
+#    print(args)
 
-    config = args.configuration
+    inp, out = args.input, args.output
+    config, out_type = args.configuration,  args.output_type
+
+    import pickle
+    network = pickle.load(open(inp,'rb'))
+
     if config is None :
         config = default_option
     else :
@@ -362,6 +364,16 @@ if __name__ == "__main__":
         config = json.load(config)
         validate_config(config)
 
+    if out_type == "png":
+        import uuid
+        temp_file = "temp_"+str(uuid.uuid4())
+        networkx_to_cytoscape_html(temp_file, network, options=config)
+        b64input = html_to_png([temp_file], width=1280, height=720, save=False)
+        save_png(b64input, out)
+    elif out_type == "html":
+        networkx_to_cytoscape_html(out, network, options=config)
+    else :
+        raise Exception("Unrecognized output format: "+str(out_type))
 
 
 

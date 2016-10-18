@@ -6,9 +6,8 @@ setup(name="LNTk",
       version='0.1',
       author="Vincent Antaki",
       author_email="vincent.antaki@mail.mcgill.ca",
-      url="",
-#      packages=["networkx",'python-community','images2gif']
+      url="https://github.com/DjAntaki/little-network-toolkit",
       install_requires=["networkx",'selenium','xvfbwrapper','Pillow']
       )
 
-#optionnal_packages = ['nose','sphinx','coverage.py']
+#optionnal_packages = ['nose','sphinx']

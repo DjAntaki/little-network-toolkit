@@ -1,6 +1,8 @@
 import unittest
 from selenium import webdriver
 from xvfbwrapper import Xvfb
+
+import src.scripts.nx_to_gif
 from src.scripts import visual_utils
 from src.datasets.generated import get_gnp_series
 import os
@@ -58,10 +60,10 @@ class TestHTMLtoPNG(unittest.TestCase):
         teardown_remove_files([self.tmp_root+"test.html"])
 
     def test_valid_options(self):
-        return
+      #  return
         defopt = visual_utils.default_option
         from copy import deepcopy
-        options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["hexagon","circle","square"]}
+        options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["rectangle",]}# "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid"]}
         for key,values in options_to_test.items():
             for value in values :
                 print("testing option "+str(key)+" with value "+str(value))
@@ -75,7 +77,7 @@ class TestHTMLtoPNG(unittest.TestCase):
                 self.assertTrue(isinstance(im,Image))
 
 
-        teardown_remove_files([self.tmp_root + i for i in ("test.html")])
+        teardown_remove_files([self.tmp_root + i for i in ("test.html",)])
 
 class TestGif(unittest.TestCase):
     def setUp(self):
@@ -89,7 +91,7 @@ class TestGif(unittest.TestCase):
         teardown_remove_files(self.tmp_root+"test.gif")
 
     def test_make_gif(self):
-        visual_utils.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs,tmp_location=self.tmp_root)
+        src.scripts.nx_to_gif.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs, tmp_location=self.tmp_root)
 
 # class TestRenderer(unittest.TestCase):
 #     def test_render_html(self):
