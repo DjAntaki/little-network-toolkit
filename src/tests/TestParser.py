@@ -2,7 +2,7 @@
 import unittest
 import networkx as nx
 #from src.scripts import visual_utils as vu
-from src.scripts import load_network as ln
+from src.scripts import parser as parser
 import networkx.algorithms.isomorphism as iso
 import os
 
@@ -24,8 +24,8 @@ class CSV_parse_test(unittest.TestCase):
     def test_back_and_forth(self):
         ncsv, ecsv = "test_node_csv","test_edges_csv"
 
-        ln.networkx_to_csv(self.G,ncsv,ecsv)
-        H = ln.csv_to_networkx(ncsv,ecsv)
+        parser.networkx_to_csv(self.G, ncsv, ecsv)
+        H = parser.csv_to_networkx(ncsv, ecsv)
 
         print(self.G.nodes())
         print(H.nodes())

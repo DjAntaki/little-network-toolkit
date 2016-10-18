@@ -25,7 +25,7 @@ class TestHTML(unittest.TestCase):
         teardown_remove_files(self.tmp_root+"test.html")
 
     def test_networkx_to_html(self):
-        visual_utils.networkx_to_cytoscape_html(self.graphs[0], output_filename=self.tmp_root+"test.html")
+        visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html", self.graphs[0])
 
 class TestHTMLtoPNG(unittest.TestCase):
     def setUp(self):
@@ -37,15 +37,26 @@ class TestHTMLtoPNG(unittest.TestCase):
         #Check if it has been created first?
         print(os.getcwd())
         teardown_remove_files([self.tmp_root+i for i in ("test.html","test.png")])
-
     def test_networkx_to_png(self):
-        visual_utils.networkx_to_cytoscape_html(self.graphs[0], output_filename=self.tmp_root+"test.html")
+        visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0])
         b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
         self.assertTrue(len(b64png)==1)
         im = visual_utils.b64toImage(b64png[0])
         from PIL.Image import Image
         self.assertTrue(isinstance(im,Image))
 
+    def test_multiple_layouts(self):
+        from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_options as defopt
+        all_layouts = list(all_layouts)
+        all_layouts.remove('preset')
+        for layout in all_layouts:
+            defopt['layout'] = layout
+            visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0],defopt)
+            b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
+            self.assertTrue(len(b64png)==1)
+            im = visual_utils.b64toImage(b64png[0])
+            from PIL.Image import Image
+            self.assertTrue(isinstance(im,Image))
 
 class TestGif(unittest.TestCase):
     def setUp(self):
@@ -60,32 +71,6 @@ class TestGif(unittest.TestCase):
 
     def test_make_gif(self):
         visual_utils.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs,tmp_location=self.tmp_root)
-
-
-class TestMultipleLayouts(unittest.TestCase):
-    @staticmethod
-    def setUpClass():
-        from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts
-
-        all_layouts = list(all_layouts)
-        all_layouts.remove('preset')
-
-        def set_layout_case(layout):
-            def test_layout(self):
-                print("test_layout",self)
-                assert False
-                pass
-            setattr(TestMultipleLayouts, "test_" + layout,test_layout)
-
-        for layout in all_layouts:
-            set_layout_case(layout)
-            pass
-
-    def setUp(self):
-        pass
-
-    def test_preset_case(self):
-        pass
 
 class TestRenderer(unittest.TestCase):
     def setUp(self):

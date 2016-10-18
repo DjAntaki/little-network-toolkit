@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from src.scripts import network_manipulations as nm
+from src.scripts import manipulations as nm
 
 class TestManipulationUndirectedGraph(unittest.TestCase):
     def setUp(self):
@@ -27,8 +27,10 @@ class TestManipulationUndirectedGraph(unittest.TestCase):
 
         nm.merge_nodes(self.G, to_merge_node_id, "newnode")
 
+        i = 0
         for i,j in edges_not_to_be_merged:
             self.G[i][j]
+            i += 1
 
         for i,j in edges_to_be_merged:
             if i in to_merge_node_id:
@@ -40,6 +42,7 @@ class TestManipulationUndirectedGraph(unittest.TestCase):
                 self.G[i]["newnode"]
             else :
                 raise Exception('Something very wrong happen')
+            i += 1
 
         assert all([not n in self.G.nodes() for n in to_merge_node_id])
 

@@ -1,6 +1,6 @@
 
 import networkx as nx
-from src.scripts.network_manipulations import *
+from src.scripts.manipulations import *
 
 def compute_node_betweeness(G,new_column_id="betweeness"):
     """
@@ -23,5 +23,6 @@ def compute_node_closeness(G,new_column_id="closeness"):
     return G
 
 def compute_edge_betweeness(G,new_column_id="betweeness"):
-    edge_betweenness = nx.edge_betweenness_centrality(H)
+    edge_betweenness = nx.edge_betweenness_centrality(G)
+    update_network_edge_data(G,new_column_id,edge_betweenness)
     return G

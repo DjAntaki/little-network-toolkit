@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-default_options = {"layout": "hexagon"}
+default_options = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
 def reverse_gif(filename):
@@ -46,7 +46,7 @@ def make_gif_from_image_list(output_filename, image_list, duration=2):
     from src.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-def graph_sequence_to_gif(output_filename, graph_list, layout=default_options, tmp_location=""):
+def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_options, tmp_location=""):
     import uuid
 #    from gif import make_gif
     # Todo : validate given layout
@@ -55,7 +55,7 @@ def graph_sequence_to_gif(output_filename, graph_list, layout=default_options, t
     temp_files_list = []
     for G in graph_list:
         temp_filename = tmp_location+ uuid.uuid4().hex
-        networkx_to_cytoscape_html(G,temp_filename,layout)
+        networkx_to_cytoscape_html(temp_filename, G, visual_config)
         temp_files_list.append(temp_filename)
 
     png_images_bytearrays = html_to_png(temp_files_list,save=False)
@@ -170,6 +170,7 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
 def _generate_stylesheet_cytoscape(G, options):
     """
 
+
     Handles the preset layout and style options. For further information, see documentation.
 
     :param options : a dictionnary indicating the layout and style to apply.
@@ -183,13 +184,14 @@ def _generate_stylesheet_cytoscape(G, options):
 
     node_size_option = ""
     if "node_size" in options.keys():
+        from src.scripts import analytics
         opt = options["node_size"]
         if opt == "betweeness":
-            pass
+            analytics.compute_node_betweeness(G)
         elif opt == "connectivity":
-            pass #todo : todo todo
-        elif opt == "":
-            pass
+            analytics.compute_node_eigenvect(G,"connectivity")
+        elif opt == "closeness":
+            analytics.compute_node_closeness(G)
         else :
             raise Exception("The option "+str(opt)+" for node size is unknowned.")
 
@@ -208,16 +210,17 @@ def _generate_stylesheet_cytoscape(G, options):
     if "edge_width" in options.keys():
         opt = options["edge_width"]
         if opt == "betweeness":
+            analytics.compute_edge_betweeness(G)
             pass
         else :
             raise Exception("The option " + str(opt) + " for edge width is unknowned.")
 
-        edge_style = """
+        edge_style = """,
         {selector: 'edge',
         style : {"""
-        + """'width': '' """.format() + "}\n}"
+        + """'width': 'data({id})' """.format(id=opt) + "}\n}"
+        style += edge_style
 
-        # todo
 
     if "background-opacity" in options.keys():
         extra_style = """,
@@ -227,6 +230,8 @@ def _generate_stylesheet_cytoscape(G, options):
             'background-opacity': {opacity}
           }
         }""".format(opacity=options["background-opacity"])
+
+        style += extra_style
 
     return style
 
@@ -239,7 +244,7 @@ def _generate_layout_cytoscape(options):
         raise NotImplementedError()
 
 
-    return "layout: {name: '{opt}'}".format(opt=opt)
+    return "{name: '"+opt+"'}"
 
 def _generate_element_list_cytoscape(graph, options,verbose=False):
     node_id_list = graph.nodes()
@@ -338,14 +343,13 @@ if __name__ == "__main__":
                         help='The path to the network(s) in input. File(s) in input must be binary-writted pickled networkx instance(s).' )
     parser.add_argument('output', metavar='o', type=str,
                         help='The desired output location. Format has to be specified between .html, .png or .gif')
-
-    #todo add layout
-
-#    parser.add_argument('integers', metavar='N', type=int, nargs='+',
-#                        help='an integer for the accumulator')
-#    parser.add_argument('--sum', dest='accumulate', action='store_const',
-#                        const=sum, default=max,
-#                        help='sum the integers (default: find the max)')
+    parser.add_argument('configuration', metavar='c', type=str, default=None,
+                        help='The path to the layout and style configuration file.')
 
     args = parser.parse_args()
+    print(args)
+
+
+
+
 #    print args.accumulate(args.integers)
