@@ -7,7 +7,7 @@ addons:
 build: "python setup.py build"
 
 #
-before_install: "."
+#before_install: "."
 
 # command to install dependencies
 install: "python setup.py install"
