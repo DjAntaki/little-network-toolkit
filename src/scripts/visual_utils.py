@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
-default_options = {"layout": 'grid'}
+default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
+
+def validate_config(config):
+    #Todo
+    pass
+
 
 def reverse_gif(filename):
     """
@@ -10,6 +15,7 @@ def reverse_gif(filename):
     """
     from PIL import Image, ImageSequence
 #    from images2gif import writeGif
+    from src.static.python.images2gif import writeGif
     import sys, os
     filename = sys.argv[1]
     im = Image.open(filename)
@@ -46,7 +52,7 @@ def make_gif_from_image_list(output_filename, image_list, duration=2):
     from src.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_options, tmp_location=""):
+def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_option, tmp_location=""):
     import uuid
 #    from gif import make_gif
     # Todo : validate given layout
@@ -269,7 +275,7 @@ def _generate_element_list_cytoscape(graph, options,verbose=False):
 
     return elements
 
-def networkx_to_cytoscape_html(output_filename, graph, options=default_options, verbose=False):
+def networkx_to_cytoscape_html(output_filename, graph, options=default_option, verbose=False):
     """
     This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).
 
@@ -343,10 +349,18 @@ if __name__ == "__main__":
     parser.add_argument('output', metavar='o', type=str,
                         help='The desired output location. Format has to be specified between .html, .png or .gif')
     parser.add_argument('configuration', metavar='c', type=str, default=None,
-                        help='The path to the layout and style configuration file.')
+                        help='The path to the layout and style configuration json file.')
 
     args = parser.parse_args()
     print(args)
+
+    config = args.configuration
+    if config is None :
+        config = default_option
+    else :
+        import json
+        config = json.load(config)
+        validate_config(config)
 
 
 

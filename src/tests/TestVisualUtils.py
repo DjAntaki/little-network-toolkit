@@ -43,7 +43,7 @@ class TestHTMLtoPNG(unittest.TestCase):
         teardown_remove_files([self.tmp_root + i for i in ("test.html", "test.png")])
 
     def test_layouts(self):
-        from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_options as defopt
+        from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_option as defopt
         all_layouts = list(all_layouts)
         all_layouts.remove('preset')
         for layout in all_layouts:
@@ -59,7 +59,7 @@ class TestHTMLtoPNG(unittest.TestCase):
 
     def test_valid_options(self):
         return
-        defopt = visual_utils.default_options
+        defopt = visual_utils.default_option
         from copy import deepcopy
         options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["hexagon","circle","square"]}
         for key,values in options_to_test.items():
@@ -91,12 +91,12 @@ class TestGif(unittest.TestCase):
     def test_make_gif(self):
         visual_utils.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs,tmp_location=self.tmp_root)
 
-class TestRenderer(unittest.TestCase):
-    def test_render_html(self):
-        print(os.getcwd())
-        xvfb = Xvfb(width=1280, height=720)
-        xvfb.start()
-        file_location = "./src/nosetests/test_data/test.html"
-        browser = visual_utils.render_html(file_location)
-        browser.quit()
-        xvfb.stop()
+# class TestRenderer(unittest.TestCase):
+#     def test_render_html(self):
+#         print(os.getcwd())
+#         xvfb = Xvfb(width=1280, height=720)
+#         xvfb.start()
+#         file_location = "./src/nosetests/test_data/test.html"
+#         browser = visual_utils.render_html(file_location)
+#         browser.quit()
+#         xvfb.stop()
