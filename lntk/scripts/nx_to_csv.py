@@ -1,4 +1,4 @@
-from parser import networkx_to_csv
+from lntk.parser import networkx_to_csv
 
 if __name__=="__main__":
     import argparse

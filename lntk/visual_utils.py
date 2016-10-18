@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from src.scripts import analytics
+import analytics
 default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
@@ -16,7 +16,7 @@ def reverse_gif(filename):
     """
     from PIL import Image, ImageSequence
 #    from images2gif import writeGif
-    from src.static.python.images2gif import writeGif
+    from lntk.static.python.images2gif import writeGif
     import sys, os
     filename = sys.argv[1]
     im = Image.open(filename)
@@ -37,7 +37,7 @@ def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
     """
     from PIL import Image
 #    from images2gif import writeGif
-    from src.static.python import images2gif
+    from lntk.static.python import images2gif
     image_list = []
 
     for filepath in png_filepath_list:
@@ -50,7 +50,7 @@ def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
 
 def make_gif_from_png_base64(output_filename, png_b64_list, duration=2):
     #from images2gif import writeGif
-    from src.static.python import images2gif
+    from lntk.static.python import images2gif
 
     image_list = list(map(b64toImage,png_b64_list))
     images2gif.writeGif(output_filename, image_list, duration=duration)
@@ -58,7 +58,7 @@ def make_gif_from_png_base64(output_filename, png_b64_list, duration=2):
 
 def make_gif_from_image_list(output_filename, image_list, duration=2):
 #    from images2gif import writeGif
-    from src.static.python import images2gif
+    from lntk.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
 
@@ -73,8 +73,8 @@ def render_html(file_location):
 def b64toImage(base64_input):
     """
     Cast a base 64 encoded unicode string in input to a PIL Image instance.
-    :param base64_input:
-    :return: an Image instance from the PIL library
+    :param base64_input: a base 64 encoded unicode string representing a png image
+    :return: an Image instance from the Pillow library
     """
     import io
     from PIL import Image
@@ -293,7 +293,7 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
 
     import os
     print(os.getcwd())
-    cytoscape_library = open("./src/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
+    cytoscape_library = open("./lntk/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
 
     # Set script path sur based on working directory?
     # src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
@@ -334,47 +334,3 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
     f.write(html_template)
     f.close()
 
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description='LNTk visual utilities scripts')
-    parser.add_argument('input', metavar='i', type=str,
-                        help='The path to the network in input. File in input must be binary-writted pickled networkx instance.' )
-    parser.add_argument('output', metavar='o', type=str,
-                        help='The desired output location.')
-    parser.add_argument('output_type',metavar='t',type=str ,default='png',
-                        help="The desired output type. Either 'html' or 'png'.")
-
-    parser.add_argument('configuration', metavar='c', type=str, default=None,nargs='?', help='The path to the layout and style configuration json file.')
-
-    args = parser.parse_args()
-#    print(args)
-
-    inp, out = args.input, args.output
-    config, out_type = args.configuration,  args.output_type
-
-    import pickle
-    network = pickle.load(open(inp,'rb'))
-
-    if config is None :
-        config = default_option
-    else :
-        import json
-        config = json.load(config)
-        validate_config(config)
-
-    if out_type == "png":
-        import uuid
-        temp_file = "temp_"+str(uuid.uuid4())
-        networkx_to_cytoscape_html(temp_file, network, options=config)
-        b64input = html_to_png([temp_file], width=1280, height=720, save=False)
-        save_png(b64input, out)
-    elif out_type == "html":
-        networkx_to_cytoscape_html(out, network, options=config)
-    else :
-        raise Exception("Unrecognized output format: "+str(out_type))
-
-
-
-#    print args.accumulate(args.integers)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from src.scripts.visual_utils import default_option, validate_config, networkx_to_cytoscape_html, html_to_png, \
+from lntk.visual_utils import default_option, validate_config, networkx_to_cytoscape_html, html_to_png, \
     make_gif_from_png_base64
 
 def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_option, duration=2, tmp_location=""):

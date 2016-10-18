@@ -1,7 +1,7 @@
 
 import networkx as nx
 
-from src.scripts import manipulations as m
+import manipulations as m
 
 def compute_node_betweeness(G,new_column_id="betweeness"):
     """
@@ -40,3 +40,6 @@ def compute_edge_betweeness(G,new_column_id="betweeness"):
     """
     edge_betweenness = nx.edge_betweenness_centrality(G)
     m.update_network_edge_data(G,new_column_id,edge_betweenness)
+
+#def modularity_cluster(G,new_column_id):
+#   pass

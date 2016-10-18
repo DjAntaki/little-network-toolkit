@@ -2,7 +2,7 @@
 import unittest
 import networkx as nx
 #from src.scripts import visual_utils as vu
-from src.scripts import parser as parser
+from lntk import parser
 import networkx.algorithms.isomorphism as iso
 import os
 

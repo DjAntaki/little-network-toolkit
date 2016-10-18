@@ -2,9 +2,9 @@ import unittest
 from selenium import webdriver
 from xvfbwrapper import Xvfb
 
-import src.scripts.nx_to_gif
-from src.scripts import visual_utils
-from src.datasets.generated import get_gnp_series
+import lntk.scripts.nx_to_gif
+from lntk import visual_utils
+from lntk.datasets.generated import get_gnp_series
 import os
 #from nose import with_setup
 
@@ -19,7 +19,7 @@ def teardown_remove_files(filepaths):
 class TestHTML(unittest.TestCase):
     def setUp(self):
         self.graphs = get_gnp_series()
-        self.tmp_root = os.getcwd() + "/src/tests/tmp/"
+        self.tmp_root = os.getcwd() + "/lntk/tests/tmp/"
 
     def tearDown(self):
         #Check if it has been created first?
@@ -32,7 +32,7 @@ class TestHTML(unittest.TestCase):
 class TestHTMLtoPNG(unittest.TestCase):
     def setUp(self):
         self.graphs = get_gnp_series()
-        self.tmp_root = os.getcwd() + "/src/tests/tmp/"
+        self.tmp_root = os.getcwd() + "/lntk/tests/tmp/"
 #        self.tmp_root = "src/tests/tmp/"
 
     def test_networkx_to_png(self):
@@ -45,7 +45,7 @@ class TestHTMLtoPNG(unittest.TestCase):
         teardown_remove_files([self.tmp_root + i for i in ("test.html", "test.png")])
 
     def test_layouts(self):
-        from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_option as defopt
+        from lntk.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_option as defopt
         all_layouts = list(all_layouts)
         all_layouts.remove('preset')
         for layout in all_layouts:
@@ -81,9 +81,9 @@ class TestHTMLtoPNG(unittest.TestCase):
 
 class TestGif(unittest.TestCase):
     def setUp(self):
-        from src.datasets.generated import get_gnp_series
+        from lntk.datasets.generated import get_gnp_series
         self.graphs = get_gnp_series()
-        self.tmp_root = "src/tests/tmp/"
+        self.tmp_root = os.getcwd()+"/lntk/tests/tmp/"
 
     def tearDown(self):
         #Check if it has been created first?
@@ -91,7 +91,7 @@ class TestGif(unittest.TestCase):
         teardown_remove_files(self.tmp_root+"test.gif")
 
     def test_make_gif(self):
-        src.scripts.nx_to_gif.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs, tmp_location=self.tmp_root)
+        lntk.scripts.nx_to_gif.graph_sequence_to_gif("lntk/tests/tmp/test.gif", self.graphs, tmp_location=self.tmp_root)
 
 # class TestRenderer(unittest.TestCase):
 #     def test_render_html(self):

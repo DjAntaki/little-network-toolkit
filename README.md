@@ -17,19 +17,21 @@ A collection of scripts to import, save, manipulate and render undirected graph.
 
 ### Programs
 
-- Xvfb : sudo apt-get install xvfb
-- Geckodriver  : npm install geckodriver
 
-(if npm or nodejs is not installed on your machine : sudo apt-get install npm nodejs)
+#### Xvfb
+
+    sudo apt-get install xvfb
+
+#### Geckodriver
+
+    npm install geckodriver
+
+Alternatively, geckodriver can be downloaded at https://github.com/mozilla/geckodriver/releases/. If npm or nodejs is not installed on your machine use command
+    sudo apt-get install npm nodejs
 
 Then, make sure you that geckodriver is in your path. If it is not, look into nodejs "node_modules" directory and use the command :
 
- export PATH=$PATH:/path/to/geckodriver/direction
-
-
-Alternatively, geckodriver can be download https://github.com/mozilla/geckodriver/releases/
-
-
+ export PATH=$PATH:/path/to/nodejs/directory/node_modules/geckodriver/
 
 
 ### Python libraries
@@ -39,23 +41,34 @@ These can be installed with the command *python setup.py build*
 - Networkx
 - Selenium
 - Xvfbwrapper
+- Pillow
+
+### Included libraries
+
+The source code of the following libraries are included in the directory "static" of the source code.
+
+- cytoscape.js 2.7.19
+- images2gif (https://pypi.python.org/pypi/images2gif)
+
 
 ## Details
 
-### .nx
+###
 
 Networkx graph are saved with *pickle* and with the extension. They can be import in the following way :
 
     import pickle
-    graph = pickle.load("./mygraph")
+    graph = pickle.load(open("./mygraph",'rb'))
 
 ### CSV to networkx
 
-Two csv are required to get a networkx graph. The first provided csv defines the nodes. Its first columns is
+Two csv are required to get a networkx graph. The first provided csv defines the nodes while the second defines the edges. By default, the first columns of the node csv is interpreted as node id and the first and second columns of the edge csv are interpreted respectively as the source and target of the edge. It is not possible to change that behavior using the command line interface.
 
-By default, it is assumed that first line of the csv is a header containning the columns ids. If it is not the case, the flag --noheader can be passed to the command line util.
 
- The created graph is defined as
+
+By default, it is assumed that first line of the csv is a header containning the columns ids. If it is not the case, the flag --header false can be passed to the command line util.
+
+The created graph is defined as
 
 
 

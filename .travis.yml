@@ -6,12 +6,9 @@ addons:
   firefox: latest
 build: "python setup.py build"
 
-#
-#before_install: "."
-
 # command to install dependencies
 install: 
   - "python setup.py install"
   - npm install geckodriver
 # command to run tests
-script: "nosetests src/tests/"
+script: "nosetests lntk/tests/"

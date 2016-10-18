@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from src.scripts import manipulations as nm
+from lntk import manipulations as nm
 
 class TestManipulationUndirectedGraph(unittest.TestCase):
     def setUp(self):
