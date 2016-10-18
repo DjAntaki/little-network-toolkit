@@ -211,7 +211,6 @@ def _generate_stylesheet_cytoscape(G, options):
         opt = options["edge_width"]
         if opt == "betweeness":
             analytics.compute_edge_betweeness(G)
-            pass
         else :
             raise Exception("The option " + str(opt) + " for edge width is unknowned.")
 

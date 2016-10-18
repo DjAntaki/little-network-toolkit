@@ -31,7 +31,7 @@ def parse_nodes_csv(node_csv_path, node_id_column=0, header=True):
             n_id = entry.pop(node_id_column)
 
             if header and len(entry) > 0:
-                #misc data
+                #Todo : add nodes attributes
                 node_list.append((n_id,{}))
             else :
                 node_list.append((n_id,{}))
@@ -55,7 +55,6 @@ def parse_edges_csv(edge_csv_path, edge_id_column1=0, edge_id_column2=1, header=
 
         edge_list = []
         for entry in csv_reader[i:]:
-            print('entry',entry)
             if edge_id_column1 < edge_id_column2:
                 edge_id2 = entry.pop(edge_id_column2)
                 edge_id1 = entry.pop(edge_id_column1)
@@ -67,7 +66,7 @@ def parse_edges_csv(edge_csv_path, edge_id_column1=0, edge_id_column2=1, header=
                 edge_id2 = entry.pop(edge_id_column2)
 
             if header and len(entry) > 0:
-                #Todo : add misc arguments
+                #Todo : add edges attributes
                 edge_list.append((edge_id1,edge_id2))
             else :
                 edge_list.append((edge_id1,edge_id2))

@@ -33,10 +33,6 @@ class TestHTMLtoPNG(unittest.TestCase):
         self.tmp_root = os.getcwd() + "/src/tests/tmp/"
 #        self.tmp_root = "src/tests/tmp/"
 
-    def tearDown(self):
-        #Check if it has been created first?
-        print(os.getcwd())
-        teardown_remove_files([self.tmp_root+i for i in ("test.html","test.png")])
     def test_networkx_to_png(self):
         visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0])
         b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
@@ -44,6 +40,7 @@ class TestHTMLtoPNG(unittest.TestCase):
         im = visual_utils.b64toImage(b64png[0])
         from PIL.Image import Image
         self.assertTrue(isinstance(im,Image))
+        teardown_remove_files([self.tmp_root + i for i in ("test.html", "test.png")])
 
     def test_layouts(self):
         from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_options as defopt
@@ -52,28 +49,33 @@ class TestHTMLtoPNG(unittest.TestCase):
         for layout in all_layouts:
             defopt['layout'] = layout
             visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0],defopt)
-            b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
+            b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=False)
             self.assertTrue(len(b64png)==1)
             im = visual_utils.b64toImage(b64png[0])
             from PIL.Image import Image
             self.assertTrue(isinstance(im,Image))
 
+        teardown_remove_files([self.tmp_root+"test.html"])
+
     def test_valid_options(self):
+        return
         defopt = visual_utils.default_options
         from copy import deepcopy
-        options_to_test = {''}
+        options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["hexagon","circle","square"]}
         for key,values in options_to_test.items():
             for value in values :
                 print("testing option "+str(key)+" with value "+str(value))
                 opt = deepcopy(defopt)
                 opt[key] = value
                 visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0],opt)
-                b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
+                b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=False)
                 self.assertTrue(len(b64png)==1)
                 im = visual_utils.b64toImage(b64png[0])
                 from PIL.Image import Image
                 self.assertTrue(isinstance(im,Image))
 
+
+        teardown_remove_files([self.tmp_root + i for i in ("test.html")])
 
 class TestGif(unittest.TestCase):
     def setUp(self):
