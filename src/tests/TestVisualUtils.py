@@ -45,7 +45,7 @@ class TestHTMLtoPNG(unittest.TestCase):
         from PIL.Image import Image
         self.assertTrue(isinstance(im,Image))
 
-    def test_multiple_layouts(self):
+    def test_layouts(self):
         from src.scripts.visual_utils import ALL_CYTOSCAPE_PRESET_LAYOUTS as all_layouts, default_options as defopt
         all_layouts = list(all_layouts)
         all_layouts.remove('preset')
@@ -57,6 +57,23 @@ class TestHTMLtoPNG(unittest.TestCase):
             im = visual_utils.b64toImage(b64png[0])
             from PIL.Image import Image
             self.assertTrue(isinstance(im,Image))
+
+    def test_valid_options(self):
+        defopt = visual_utils.default_options
+        from copy import deepcopy
+        options_to_test = {''}
+        for key,values in options_to_test.items():
+            for value in values :
+                print("testing option "+str(key)+" with value "+str(value))
+                opt = deepcopy(defopt)
+                opt[key] = value
+                visual_utils.networkx_to_cytoscape_html(self.tmp_root+"test.html",self.graphs[0],opt)
+                b64png = visual_utils.html_to_png(self.tmp_root+"test.html",save=True)
+                self.assertTrue(len(b64png)==1)
+                im = visual_utils.b64toImage(b64png[0])
+                from PIL.Image import Image
+                self.assertTrue(isinstance(im,Image))
+
 
 class TestGif(unittest.TestCase):
     def setUp(self):
@@ -73,21 +90,11 @@ class TestGif(unittest.TestCase):
         visual_utils.graph_sequence_to_gif("src/tests/tmp/test.gif", self.graphs,tmp_location=self.tmp_root)
 
 class TestRenderer(unittest.TestCase):
-    def setUp(self):
-        self.xvfb = Xvfb(width=1280, height=720)
-        self.addCleanup(self.xvfb.stop)
-        self.xvfb.start()
-        self.browser = webdriver.Firefox()
-        self.addCleanup(self.browser.quit)
-
     def test_render_html(self):
-        #    file_location = 'file:///home/ntak/Documents/mcgill/comp767/assignment5/little-network-toolkit/src/examples/network_example.html'
         print(os.getcwd())
+        xvfb = Xvfb(width=1280, height=720)
+        xvfb.start()
         file_location = "./src/nosetests/test_data/test.html"
         browser = visual_utils.render_html(file_location)
-
-
-
-            #html_to_png(filepaths, width=1280, height=720)
-#save_png(bytearray, output_file)
-#render_html(file_location)
+        browser.quit()
+        xvfb.stop()
