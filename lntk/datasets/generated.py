@@ -4,6 +4,8 @@ import networkx as nx
 
 def get_gnp_series(l=5, n=20, p=0.5):
     """
+    This function returns a series of graph with a fixed number of nodes. At each step, we generate a random graph and add the previous graph edges.
+
     :param l: the number of graph to return
     :param p: the probability of an edge between a node and one of its child
     :param n: the number of nodes
@@ -23,10 +25,6 @@ def get_gnp_series(l=5, n=20, p=0.5):
         last_graph = graph
 
     return graph_sequence
-
-def test():
-    """assert previous edges is contained in all subsequent graph"""
-    pass
 
 if __name__ == "__main__":
     for g in get_gnp_series():

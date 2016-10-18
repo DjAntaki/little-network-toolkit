@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Parsing Utilities &mdash; LNTk 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LNTk 0.1 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parsing-utilities">
+<h1>Parsing Utilities<a class="headerlink" href="#parsing-utilities" title="Permalink to this headline">¶</a></h1>
+<p>Functions in this file are used to process csv to networkx graph instance and networkx graph instance to csv</p>
+<span class="target" id="module-lntk.parser"></span><dl class="function">
+<dt id="lntk.parser.csv_to_networkx">
+<code class="descclassname">lntk.parser.</code><code class="descname">csv_to_networkx</code><span class="sig-paren">(</span><em>node_csv</em>, <em>edge_csv</em>, <em>node_id=0</em>, <em>edge_id1=0</em>, <em>edge_id2=1</em>, <em>header=True</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#csv_to_networkx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.csv_to_networkx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Everything is casted as a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node_csv</strong> &#8211; </li>
+<li><strong>edge_csv</strong> &#8211; </li>
+<li><strong>node_id</strong> &#8211; </li>
+<li><strong>edge_id1</strong> &#8211; </li>
+<li><strong>edge_id2</strong> &#8211; </li>
+<li><strong>header</strong> &#8211; </li>
+<li><strong>verbose</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.parser.networkx_to_csv">
+<code class="descclassname">lntk.parser.</code><code class="descname">networkx_to_csv</code><span class="sig-paren">(</span><em>G</em>, <em>node_csv_path</em>, <em>edge_csv_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#networkx_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.networkx_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>G</strong> &#8211; </li>
+<li><strong>node_csv_path</strong> &#8211; </li>
+<li><strong>edge_csv_path</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.parser.parse_edges_csv">
+<code class="descclassname">lntk.parser.</code><code class="descname">parse_edges_csv</code><span class="sig-paren">(</span><em>edge_csv_path</em>, <em>edge_id_column1=0</em>, <em>edge_id_column2=1</em>, <em>header=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#parse_edges_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.parse_edges_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lntk.parser.parse_nodes_csv">
+<code class="descclassname">lntk.parser.</code><code class="descname">parse_nodes_csv</code><span class="sig-paren">(</span><em>node_csv_path</em>, <em>node_id_column=0</em>, <em>header=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#parse_nodes_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.parse_nodes_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>If no header is present, only the ids will be retrieve. If a header is present, every columns except the id columns
+will be</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node_csv_path</strong> &#8211; </li>
+<li><strong>node_id_column</strong> &#8211; </li>
+<li><strong>header</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parse_utils.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, V. Antaki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/parse_utils.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

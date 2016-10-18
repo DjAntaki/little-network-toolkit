@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from lntk.parser import csv_to_networkx
 
 if __name__=="__main__":

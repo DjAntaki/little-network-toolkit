@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Visual Utilities &mdash; LNTk 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LNTk 0.1 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="visual-utilities">
+<h1>Visual Utilities<a class="headerlink" href="#visual-utilities" title="Permalink to this headline">¶</a></h1>
+<p>Functions in this file aim at doing visual processing of networkx graph.</p>
+<span class="target" id="module-lntk.visual_utils"></span><dl class="function">
+<dt id="lntk.visual_utils._generate_element_list_cytoscape">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">_generate_element_list_cytoscape</code><span class="sig-paren">(</span><em>graph</em>, <em>options=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#_generate_element_list_cytoscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils._generate_element_list_cytoscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a graph, this generates a string containing all elements (nodes and edges) ready to be plugged in a javascript call to cytoscape.js</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>graph</strong> &#8211; a networkx graph</li>
+<li><strong>options</strong> &#8211; unused (but might be one day).</li>
+<li><strong>verbose</strong> &#8211; If true, the nodes list and the edge list will be printed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return a string containing all nodes and edges information</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils._generate_layout_cytoscape">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">_generate_layout_cytoscape</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#_generate_layout_cytoscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils._generate_layout_cytoscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>:param a dictionnary containing the key &#8220;layout&#8221; and</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils._generate_stylesheet_cytoscape">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">_generate_stylesheet_cytoscape</code><span class="sig-paren">(</span><em>G</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#_generate_stylesheet_cytoscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils._generate_stylesheet_cytoscape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the layout and style options. For further information, see documentation.</p>
+<p>:param G : a networkx graph instance.
+:param options : a dictionnary indicating the layout and style to apply.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.b64toImage">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">b64toImage</code><span class="sig-paren">(</span><em>base64_input</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#b64toImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.b64toImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast a base 64 encoded unicode string in input to a PIL Image instance.
+:param base64_input: a base 64 encoded unicode string representing a png image
+:return: an Image instance from the Pillow library</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.html_to_png">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">html_to_png</code><span class="sig-paren">(</span><em>filepaths</em>, <em>width=1280</em>, <em>height=720</em>, <em>save=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#html_to_png"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.html_to_png" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in input one or a list of paths to html files containing a cytoscape network under variable cy. Returns the base64 of the png of the network.</p>
+<dl class="docutils">
+<dt>N.B. Common possible error :</dt>
+<dd><ul class="first last simple">
+<li>(variable cy not found) can be caused by unvalidity of the source of the cytoscape.js in the html file.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filepaths</strong> &#8211; can be one or a list of path to html network files. absolute and relative path are supported.</li>
+<li><strong>width</strong> &#8211; the image width</li>
+<li><strong>height</strong> &#8211; the image height</li>
+<li><strong>save</strong> &#8211; if True, the generated png will be saved in the same directory then its html counterpart.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a list of png encoded as base 64 unicode strings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.make_gif_from_filepaths">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">make_gif_from_filepaths</code><span class="sig-paren">(</span><em>output_filename</em>, <em>png_filepath_list</em>, <em>duration=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#make_gif_from_filepaths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.make_gif_from_filepaths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of png file path in entry, this function creates a gif showing those png sucessively for a fixed number of time and save it at the given file path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>output_filename</strong> &#8211; </li>
+<li><strong>png_filepath_list</strong> &#8211; </li>
+<li><strong>duration</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.make_gif_from_image_list">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">make_gif_from_image_list</code><span class="sig-paren">(</span><em>output_filename</em>, <em>image_list</em>, <em>duration=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#make_gif_from_image_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.make_gif_from_image_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.make_gif_from_png_base64">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">make_gif_from_png_base64</code><span class="sig-paren">(</span><em>output_filename</em>, <em>png_b64_list</em>, <em>duration=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#make_gif_from_png_base64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.make_gif_from_png_base64" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.networkx_to_cytoscape_html">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">networkx_to_cytoscape_html</code><span class="sig-paren">(</span><em>output_filename</em>, <em>graph</em>, <em>options={'layout': 'grid'}</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#networkx_to_cytoscape_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.networkx_to_cytoscape_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).</p>
+<p>option is a dictionnary in which the key &#8216;layout&#8217; must be present.</p>
+<ul class="simple">
+<li>For now, all generated graph are undirected.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>graph</strong> &#8211; A networkx graph</li>
+<li><strong>output_filename</strong> &#8211; the desired output location</li>
+<li><strong>options</strong> &#8211; a dictionnary containing the layout and style options</li>
+<li><strong>verbose</strong> &#8211; print extra details if True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.render_html">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">render_html</code><span class="sig-paren">(</span><em>file_location</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#render_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.render_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>open a Firefox browser with the given graph, returns the selenium browser instance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.reverse_gif">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">reverse_gif</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#reverse_gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.reverse_gif" title="Permalink to this definition">¶</a></dt>
+<dd><p>unused.
+taken from <a class="reference external" href="http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python">http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.save_png">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">save_png</code><span class="sig-paren">(</span><em>base64_input</em>, <em>output_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#save_png"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.save_png" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>base64</strong> &#8211; a base 64 encoded unicode string representing a png image</li>
+<li><strong>output_file</strong> &#8211; the path where the image will be saved.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lntk.visual_utils.validate_config">
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">validate_config</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#validate_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.validate_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/viz_utils.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, V. Antaki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/viz_utils.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

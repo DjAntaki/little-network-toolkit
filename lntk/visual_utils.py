@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-import analytics
+from lntk import analytics
 default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
@@ -57,7 +55,6 @@ def make_gif_from_png_base64(output_filename, png_b64_list, duration=2):
     print("Done!")
 
 def make_gif_from_image_list(output_filename, image_list, duration=2):
-#    from images2gif import writeGif
     from lntk.static.python import images2gif
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
@@ -95,12 +92,10 @@ def save_png(base64_input, output_file):
 
 def html_to_png(filepaths, width=1280, height=720,save=False):
     """
-    Takes in input one or a list of paths to html files of networks
-
+    Takes in input one or a list of paths to html files containing a cytoscape network under variable cy. Returns the base64 of the png of the network.
 
     N.B. Common possible error :
             - (variable cy not found) can be caused by unvalidity of the source of the cytoscape.js in the html file.
-            - ()
 
     :param filepaths: can be one or a list of path to html network files. absolute and relative path are supported.
     :param width: the image width
@@ -230,16 +225,26 @@ def _generate_stylesheet_cytoscape(G, options):
 
 
 def _generate_layout_cytoscape(options):
+    """
+    :param a dictionnary containing the key "layout" and
+    """
     assert "layout" in options
     opt = options["layout"]
     assert opt in ALL_CYTOSCAPE_PRESET_LAYOUTS
     if opt == 'preset':
         raise NotImplementedError()
 
-
     return "{name: '"+opt+"'}"
 
-def _generate_element_list_cytoscape(graph, options,verbose=False):
+def _generate_element_list_cytoscape(graph, options=None,verbose=False):
+    """
+    Given a graph, this generates a string containing all elements (nodes and edges) ready to be plugged in a javascript call to cytoscape.js
+
+    :param graph: a networkx graph
+    :param options: unused (but might be one day).
+    :param verbose: If true, the nodes list and the edge list will be printed.
+    :return a string containing all nodes and edges information
+    """
     node_id_list = graph.nodes()
     edges_id_list = graph.edges()
 
@@ -278,11 +283,10 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
 
     - For now, all generated graph are undirected.
 
-    :param graph:
-    :param output_filename:
-    :param options:
-    :param verbose: print extra details if true.
-    :return:
+    :param graph: A networkx graph
+    :param output_filename: the desired output location
+    :param options: a dictionnary containing the layout and style options
+    :param verbose: print extra details if True.
     """
 
     style = _generate_stylesheet_cytoscape(graph, options)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from lntk import visual_utils as vu
 
 if __name__ == "__main__":

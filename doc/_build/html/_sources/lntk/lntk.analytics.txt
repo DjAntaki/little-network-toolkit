@@ -1,0 +1,25 @@
+lntk.analytics
+==============
+
+.. automodule:: lntk.analytics
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_edge_betweeness
+      compute_node_betweeness
+      compute_node_closeness
+      compute_node_eigenvect
+   
+   
+
+   
+   
+   
+
+   
+   
+   

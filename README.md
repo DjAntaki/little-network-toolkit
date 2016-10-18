@@ -10,13 +10,13 @@ A collection of scripts to import, save, manipulate and render undirected graph.
 - Save that networkx graph to png
 - Can create a gif from a list of networkx graph
 
+## Documentation
 
-
+Documentation has been generated with sphinx. A compiled version of the documentation is included under the "doc/_build/" directory of the repository.
 
 ## Dependencies
 
 ### Programs
-
 
 #### Xvfb
 
@@ -30,8 +30,7 @@ Alternatively, geckodriver can be downloaded at https://github.com/mozilla/gecko
     sudo apt-get install npm nodejs
 
 Then, make sure you that geckodriver is in your path. If it is not, look into nodejs "node_modules" directory and use the command :
-
- export PATH=$PATH:/path/to/nodejs/directory/node_modules/geckodriver/
+    export PATH=$PATH:/path/to/nodejs/directory/node_modules/geckodriver/
 
 
 ### Python libraries
@@ -50,6 +49,11 @@ The source code of the following libraries are included in the directory "static
 - cytoscape.js 2.7.19
 - images2gif (https://pypi.python.org/pypi/images2gif)
 
+## Unittest
+
+Unittest are done with the nose library. To run them, use command
+
+    nose lntk/tests
 
 ## Details
 

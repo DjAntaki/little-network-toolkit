@@ -1,7 +1,7 @@
 
 import networkx as nx
 
-import manipulations as m
+from lntk import manipulations as m
 
 def compute_node_betweeness(G,new_column_id="betweeness"):
     """

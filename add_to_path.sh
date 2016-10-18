@@ -1,7 +1,9 @@
 
-export PYTHONPATH="$PYTHONPATH:/path_to_myapp/myapp/myapp/"
+
 
 - strip of .py
+
+export PYTHONPATH="$PYTHONPATH:/path_to_myapp/myapp/myapp/"
 
 for
 

@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lntk.parser &mdash; LNTk 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="LNTk 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for lntk.parser</h1><div class="highlight"><pre>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+
+<div class="viewcode-block" id="parse_nodes_csv"><a class="viewcode-back" href="../../parse_utils.html#lntk.parser.parse_nodes_csv">[docs]</a><span class="k">def</span> <span class="nf">parse_nodes_csv</span><span class="p">(</span><span class="n">node_csv_path</span><span class="p">,</span> <span class="n">node_id_column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    If no header is present, only the ids will be retrieve. If a header is present, every columns except the id columns</span>
+<span class="sd">    will be</span>
+
+<span class="sd">    :param node_csv_path:</span>
+<span class="sd">    :param node_id_column:</span>
+<span class="sd">    :param header:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">node_csv_path</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">csv_reader</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">if</span> <span class="n">header</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">node_id_column</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="n">column_ids</span> <span class="o">=</span> <span class="n">csv_reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_id_column</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+                <span class="n">node_id_column</span> <span class="o">=</span> <span class="n">column_ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">node_id_column</span><span class="p">)</span>
+
+        <span class="n">node_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">[</span><span class="n">i</span><span class="p">:]:</span>
+            <span class="n">n_id</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">node_id_column</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">header</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1">#Todo : add nodes attributes</span>
+                <span class="n">node_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_id</span><span class="p">,{}))</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">node_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n_id</span><span class="p">,{}))</span>
+        <span class="k">return</span> <span class="n">node_list</span></div>
+
+<div class="viewcode-block" id="parse_edges_csv"><a class="viewcode-back" href="../../parse_utils.html#lntk.parser.parse_edges_csv">[docs]</a><span class="k">def</span> <span class="nf">parse_edges_csv</span><span class="p">(</span><span class="n">edge_csv_path</span><span class="p">,</span> <span class="n">edge_id_column1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">edge_id_column2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">edge_csv_path</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">csv_reader</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">if</span> <span class="n">header</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_id_column1</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span>
+            <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="n">column_ids</span> <span class="o">=</span> <span class="n">csv_reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_id_column1</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+                <span class="n">edge_id_column1</span> <span class="o">=</span> <span class="n">column_ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">edge_id_column1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">edge_id_column2</span> <span class="o">=</span> <span class="n">column_ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">)</span>
+
+        <span class="n">edge_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">[</span><span class="n">i</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">edge_id_column1</span> <span class="o">&lt;</span> <span class="n">edge_id_column2</span><span class="p">:</span>
+                <span class="n">edge_id2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">)</span>
+                <span class="n">edge_id1</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">edge_id_column1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">edge_id_column1</span> <span class="o">==</span> <span class="n">edge_id_column2</span> <span class="p">:</span>
+                <span class="n">edge_id2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">)</span>
+                <span class="n">edge_id1</span> <span class="o">=</span> <span class="n">edge_id2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">edge_id1</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">edge_id_column1</span><span class="p">)</span>
+                <span class="n">edge_id2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">edge_id_column2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">header</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1">#Todo : add edges attributes</span>
+                <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">edge_id1</span><span class="p">,</span><span class="n">edge_id2</span><span class="p">))</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">edge_id1</span><span class="p">,</span><span class="n">edge_id2</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">edge_list</span></div>
+
+<div class="viewcode-block" id="csv_to_networkx"><a class="viewcode-back" href="../../parse_utils.html#lntk.parser.csv_to_networkx">[docs]</a><span class="k">def</span> <span class="nf">csv_to_networkx</span><span class="p">(</span><span class="n">node_csv</span><span class="p">,</span> <span class="n">edge_csv</span><span class="p">,</span><span class="n">node_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">edge_id1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">edge_id2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Everything is casted as a string.</span>
+
+<span class="sd">    :param node_csv:</span>
+<span class="sd">    :param edge_csv:</span>
+<span class="sd">    :param node_id:</span>
+<span class="sd">    :param edge_id1:</span>
+<span class="sd">    :param edge_id2:</span>
+<span class="sd">    :param header:</span>
+<span class="sd">    :param verbose:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Parsing node csv...&quot;</span><span class="p">)</span>
+    <span class="n">node_list</span> <span class="o">=</span> <span class="n">parse_nodes_csv</span><span class="p">(</span><span class="n">node_csv</span><span class="p">,</span><span class="n">node_id</span><span class="p">,</span><span class="n">header</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Parsing edges csv...&quot;</span><span class="p">)</span>
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="n">parse_edges_csv</span><span class="p">(</span><span class="n">edge_csv</span><span class="p">,</span><span class="n">edge_id1</span><span class="p">,</span><span class="n">edge_id2</span><span class="p">,</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">node_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+<div class="viewcode-block" id="networkx_to_csv"><a class="viewcode-back" href="../../parse_utils.html#lntk.parser.networkx_to_csv">[docs]</a><span class="k">def</span> <span class="nf">networkx_to_csv</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">node_csv_path</span><span class="p">,</span><span class="n">edge_csv_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    :param G:</span>
+<span class="sd">    :param node_csv_path:</span>
+<span class="sd">    :param edge_csv_path:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">edge_header_items</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Id1&quot;</span><span class="p">,</span><span class="s2">&quot;Id2&quot;</span><span class="p">]</span>
+    <span class="n">all_keys_edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">edge_id1</span><span class="p">,</span> <span class="n">edge_id2</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">edge_id1</span><span class="p">][</span><span class="n">edge_id2</span><span class="p">]</span>
+        <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">edge_id1</span><span class="p">,</span><span class="n">edge_id2</span><span class="p">,</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">all_keys_edges</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="n">edge_header_items</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">all_keys_edges</span><span class="p">))</span>
+
+    <span class="n">node_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_keys_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;node_data&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">node_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node_id</span><span class="p">,</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">all_keys_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+        <span class="n">all_keys_nodes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">node_header_items</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Id&quot;</span><span class="p">]</span>
+    <span class="n">node_header_items</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">all_keys_nodes</span><span class="p">))</span>
+
+
+    <span class="c1">#Writing the edge list in a csv</span>
+    <span class="n">f_edges</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">edge_csv_path</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">f_edges</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">edge_header_items</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">edge_id1</span><span class="p">,</span><span class="n">edge_id2</span><span class="p">,</span><span class="n">data</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">edge_id1</span><span class="p">),</span><span class="nb">str</span><span class="p">(</span><span class="n">edge_id2</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">edge_header_items</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">h</span><span class="p">])</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">f_edges</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">f_edges</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1">#Writing node list in csv</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;node header&#39;</span><span class="p">,</span><span class="n">node_header_items</span><span class="p">)</span>
+    <span class="n">f_nodes</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">node_csv_path</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node_id</span><span class="p">,</span><span class="n">data</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">node_id</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">node_header_items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">node_list</span><span class="p">:</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">h</span><span class="p">])</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">f_nodes</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f_nodes</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, V. Antaki.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

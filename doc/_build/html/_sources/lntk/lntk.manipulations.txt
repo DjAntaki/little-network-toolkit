@@ -1,0 +1,24 @@
+lntk.manipulations
+==================
+
+.. automodule:: lntk.manipulations
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      merge_nodes
+      update_network_edge_data
+      update_network_node_data
+   
+   
+
+   
+   
+   
+
+   
+   
+   

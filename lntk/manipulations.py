@@ -1,5 +1,5 @@
 
-import networkx as nx
+#import networkx as nx
 
 def merge_nodes(G, nodes_to_merge, new_node_id):
     """
