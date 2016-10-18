@@ -71,7 +71,7 @@ def render_html(file_location):
     """open a Firefox browser with the given graph, returns the selenium browser instance."""
     from selenium import webdriver
     browser = webdriver.Firefox()
-    browser.get(file_location)
+    browser.get("file://"+file_location)
     return browser
 
 

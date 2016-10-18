@@ -8,7 +8,7 @@ setup(name="LNTk",
       author_email="vincent.antaki@mail.mcgill.ca",
       url="",
 #      packages=["networkx",'python-community','images2gif']
-      install_requires=["networkx",'selenium','xvfbwrapper']
+      install_requires=["networkx",'selenium','xvfbwrapper','Pillow']
       )
 
 #optionnal_packages = ['nose','sphinx','coverage.py']

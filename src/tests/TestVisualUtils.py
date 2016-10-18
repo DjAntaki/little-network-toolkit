@@ -83,7 +83,7 @@ class TestRenderer(unittest.TestCase):
     def test_render_html(self):
         #    file_location = 'file:///home/ntak/Documents/mcgill/comp767/assignment5/little-network-toolkit/src/examples/network_example.html'
         print(os.getcwd())
-        file_location = "file:///home/kameha/Documents/mcgill_stuff/comp767/assignment5/little-network-toolkit/src/nosetests/test_data/test.html"
+        file_location = "./src/nosetests/test_data/test.html"
         browser = visual_utils.render_html(file_location)
 
 
