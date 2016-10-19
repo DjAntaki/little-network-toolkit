@@ -1,4 +1,5 @@
 from lntk import analytics
+import os
 import time
 default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
@@ -290,10 +291,9 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
 
     elements = _generate_element_list_cytoscape(graph, options,verbose)
 
-    cytoscape_library = open("./lntk/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
+    lib_path = os.path.dirname(repr(__file__))[1:] + "/static/js/cytoscape.js-2.7.10/cytoscape.min.js"
+    cytoscape_library = open(lib_path,'r').read()
 
-    # Set script path sur based on working directory?
-    # src="../static/js/cytoscape.js-2.7.10/cytoscape.js"></script>
 
     html_template =  """<!doctype html>
 <script>""" +cytoscape_library+ """</script><html>

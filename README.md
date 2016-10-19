@@ -1,11 +1,11 @@
 # little-network-toolkit (lntk)
 
-A collection of scripts to import, save, manipulate and render undirected graph. Feel free to use.
+A collection of scripts to import, save, manipulate and render undirected graph.
 
 ## Content
 
 - Parse csv to networkx and networkx to csv
-- Parse networkx graph to html file using layout functionnalities from cytoscape 2.7.10
+- Parse networkx graph to html file using layout functionalities from cytoscape 2.7.10
 - Save a networkx graph to png
 - Can create a gif from a list of networkx graph
 
@@ -35,7 +35,7 @@ Then, to install geckodriver
 
 Alternatively, geckodriver can be downloaded at https://github.com/mozilla/geckodriver/releases/.
 
-Then, make sure you that geckodriver is in your path. If it is not, look into nodejs "node_modules" directory and use the command :
+Then, make sure you that geckodriver is in your path. If it is not, add the following command to your ~/.bashrc file :
 
     export PATH=$PATH:/path_to_nodejs_directory/node_modules/geckodriver/
 
