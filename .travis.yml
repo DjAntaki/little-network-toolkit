@@ -10,7 +10,9 @@ addons:
 install:
   - pip install -e .
   - npm install geckodriver
-#  - python setup.py install
+
+before_install :
+  - sudo sh ./add_to_path.sh
 
 # command to run tests
 script: "nosetests lntk/tests/"
