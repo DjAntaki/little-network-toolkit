@@ -335,6 +335,7 @@ class GifWriter:
             if X.size and Y.size:
                 x0, x1 = X[0], X[-1] + 1
                 y0, y1 = Y[0], Y[-1] + 1
+                x0,x1,y0,y1 = tuple(map(lambda x: x[0],(x0,x1,y0,y1)))
             else:  # No change ... make it minimal
                 x0, x1 = 0, 2
                 y0, y1 = 0, 2
