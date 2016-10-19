@@ -28,8 +28,8 @@ Here is a list of non-python dependencies for the scripts and the way to install
 
     npm install geckodriver
 
-If npm or nodejs is not installed on your machine use command
-    sudo apt-get install npm nodejs
+If npm or nodejs-legacy is not installed on your machine use command
+    sudo apt-get install npm nodejs-legacy
 
 Alternatively, geckodriver can be downloaded at https://github.com/mozilla/geckodriver/releases/.
 

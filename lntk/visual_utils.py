@@ -44,19 +44,17 @@ def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
 
     images2gif.writeGif(output_filename, image_list, duration=duration)
 
-    print("Done!")
 
 def make_gif_from_png_base64(output_filename, png_b64_list, duration=2):
-    #from images2gif import writeGif
     from lntk.static.python import images2gif
 
     image_list = list(map(b64toImage,png_b64_list))
     images2gif.writeGif(output_filename, image_list, duration=duration)
-    print("Done!")
 
-def make_gif_from_image_list(output_filename, image_list, duration=2):
-    from lntk.static.python import images2gif
-    images2gif.writeGif(output_filename, image_list, duration=duration)
+#def make_gif_from_image_list(output_filename, image_list, duration=2):
+  #  """unused function"""
+  #  from lntk.static.python import images2gif
+  #  images2gif.writeGif(output_filename, image_list, #duration=duration)
 
 
 def render_html(file_location):
@@ -76,7 +74,6 @@ def b64toImage(base64_input):
     import io
     from PIL import Image
     import base64
-    print(len(base64_input))
     bytes = base64.b64decode(base64_input)
     return Image.open(io.BytesIO(bytes))
 
@@ -86,7 +83,6 @@ def save_png(base64_input, output_file):
     :param base64: a base 64 encoded unicode string representing a png image
     :param output_file: the path where the image will be saved.
     """
-    print(len(base64_input))
     image = b64toImage(base64_input)
     image.save(output_file)
 
@@ -120,10 +116,7 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
 
     def cast_html_to_png(file_location):
         browser.get("file://"+file_location)
-        print("file://"+file_location)
         b64 = browser.execute_script('return cy.png()')
-        #cy.jpg()
-        #cy.json()
         #index is always 22
         index = b64.index("base64,") + len("base64,")
         return b64[index:]
@@ -134,23 +127,17 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
     for f in filepaths:
         if f[0] != '/':
             f = os.path.join(abspath,f)
-        print("File : "+f)
+#        print("File : "+f)
         b64image = cast_html_to_png(f)
 
 #        print(b64image)
-        print(len(b64image))
         png_images.append(b64image)
-        print(len(png_images))
-        print(len(png_images[-1]))
 
         if save :
             if len(f)>5 and f[-5:] == ".html":
                 f = f[:-5]
             f += ".png"
-            print(len(png_images[-1]))
-            print(f)
             save_png(png_images[-1],f)
-
     browser.quit()
     xvfb.stop()
     return png_images
@@ -341,8 +328,6 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
 
 def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_option, duration=2, tmp_location=""):
     import uuid
-#    from gif import make_gif
-    # Todo : validate given layout
     validate_config(visual_config)
 
     temp_files_list = []
@@ -352,6 +337,7 @@ def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_opt
         temp_files_list.append(temp_filename)
 
     png_images_bytearrays = html_to_png(temp_files_list,save=False)
+
 
     make_gif_from_png_base64(output_filename, png_images_bytearrays, duration=duration)
 

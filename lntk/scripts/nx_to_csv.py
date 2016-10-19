@@ -9,14 +9,13 @@ if __name__=="__main__":
                         help='The path to a pickled networkx graph.' )
     parser.add_argument('output', metavar='o', type=str, nargs=2,
                         help='The desired outputs location. Will save two csv. The first one is the node list and the second is the edge list. ')
-
+    parser.add_argument('--header',dest='header', type=bool, default=True, help="Boolean value representing the presence or absence of a header in the generated csv. Default is True.")
     args = parser.parse_args()
-    print(args)
     inp = args.input
     node_list_csv, edge_list_csv = args.output
     header = args.header
 
     import pickle
     network = pickle.load(open(inp,'rb'))
-    networkx_to_csv(network,node_list_csv,edge_list_csv)
+    networkx_to_csv(network,node_list_csv,edge_list_csv, header=header)
 

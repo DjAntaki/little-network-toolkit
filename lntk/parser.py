@@ -16,7 +16,6 @@ def parse_nodes_csv(node_csv_path, node_id_column=0, header=True):
 
     with open(node_csv_path,'r') as f:
         csv_reader = list(csv.reader(f))
-
         i=0
         if header is False:
             assert type(node_id_column) is int
@@ -25,14 +24,14 @@ def parse_nodes_csv(node_csv_path, node_id_column=0, header=True):
             i += 1
             if isinstance(node_id_column,str):
                 node_id_column = column_ids.index(node_id_column)
+            column_ids.pop(node_id_column)
 
         node_list = []
         for entry in csv_reader[i:]:
             n_id = entry.pop(node_id_column)
 
-            if header and len(entry) > 0:
-                #Todo : add nodes attributes
-                node_list.append((n_id,{}))
+            if header and len(entry)>0:
+                node_list.append((n_id,{i:j for i,j in zip(column_ids,entry)}))
             else :
                 node_list.append((n_id,{}))
         return node_list
@@ -100,14 +99,14 @@ def csv_to_networkx(node_csv, edge_csv,node_id=0,edge_id1=0,edge_id2=1, header=T
     G.add_nodes_from(node_list)
     return G
 
-def networkx_to_csv(G,node_csv_path,edge_csv_path):
+def networkx_to_csv(G,node_csv_path,edge_csv_path,header=True):
     """
+    Generate two csv from a networkx graph. The first one represents a list of nodes while the second represents a list of edges.
 
-
-    :param G:
-    :param node_csv_path:
-    :param edge_csv_path:
-    :return:
+    :param G: a networkx graph
+    :param node_csv_path: the path to the node csv output location
+    :param edge_csv_path: the path to the edge csv output location
+    :param header: If True, the generated csv will have a header.
     """
     edge_list = []
     edge_header_items = ["Id1","Id2"]
@@ -124,7 +123,6 @@ def networkx_to_csv(G,node_csv_path,edge_csv_path):
     all_keys_nodes = set()
     for node_id in G.nodes():
         data = G[node_id]
-        print("node_data",data)
         node_list.append((node_id,data))
         for k in data.keys():
             all_keys_nodes.add(k)
@@ -138,30 +136,34 @@ def networkx_to_csv(G,node_csv_path,edge_csv_path):
 
     #Writing the edge list in a csv
     f_edges = open(edge_csv_path,'w')
-    f_edges.write(", ".join(edge_header_items)+"\n")
+    if header :
+        f_edges.write(", ".join(edge_header_items)+"\n")
 
     for edge_id1,edge_id2,data in edge_list:
         entry = [str(edge_id1),str(edge_id2)]
-        for h in edge_header_items[2:]:
-            if h in data.keys():
-                entry.append(data[h])
-            else :
-                entry.append("")
+        if header :
+            for h in edge_header_items[2:]:
+                if h in data.keys():
+                    entry.append(data[h])
+                else :
+                    entry.append("")
         f_edges.write(",".join(entry) + "\n")
 
     f_edges.close()
 
     #Writing node list in csv
-    print('node header',node_header_items)
     f_nodes = open(node_csv_path,'w')
+    if header :
+        f_nodes.write(",".join(node_header_items)+"\n")
     for node_id,data in node_list:
         entry = [str(node_id)]
-        for h in node_header_items[1:]:
-            print(h)
-            if h in data.keys() and not h in node_list:
-                entry.append(data[h])
-            else :
-                entry.append("")
+        if header :
+            for h in node_header_items[1:]:
+                print(h)
+                if h in data.keys() and not h in node_list:
+                    entry.append(data[h])
+                else :
+                    entry.append("")
         f_nodes.write(",".join(entry) + "\n")
     f_nodes.close()
 

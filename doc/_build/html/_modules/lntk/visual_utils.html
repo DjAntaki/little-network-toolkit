@@ -82,21 +82,19 @@
         <span class="n">image_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
 
 
-    <span class="n">images2gif</span><span class="o">.</span><span class="n">writeGif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
+    <span class="n">images2gif</span><span class="o">.</span><span class="n">writeGif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span></div>
 
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="make_gif_from_png_base64"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.make_gif_from_png_base64">[docs]</a><span class="k">def</span> <span class="nf">make_gif_from_png_base64</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">png_b64_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="c1">#from images2gif import writeGif</span>
     <span class="kn">from</span> <span class="nn">lntk.static.python</span> <span class="kn">import</span> <span class="n">images2gif</span>
 
     <span class="n">image_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">b64toImage</span><span class="p">,</span><span class="n">png_b64_list</span><span class="p">))</span>
-    <span class="n">images2gif</span><span class="o">.</span><span class="n">writeGif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="make_gif_from_image_list"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.make_gif_from_image_list">[docs]</a><span class="k">def</span> <span class="nf">make_gif_from_image_list</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">lntk.static.python</span> <span class="kn">import</span> <span class="n">images2gif</span>
     <span class="n">images2gif</span><span class="o">.</span><span class="n">writeGif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">image_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span></div>
+
+<span class="c1">#def make_gif_from_image_list(output_filename, image_list, duration=2):</span>
+  <span class="c1">#  &quot;&quot;&quot;unused function&quot;&quot;&quot;</span>
+  <span class="c1">#  from lntk.static.python import images2gif</span>
+  <span class="c1">#  images2gif.writeGif(output_filename, image_list, #duration=duration)</span>
 
 
 <div class="viewcode-block" id="render_html"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.render_html">[docs]</a><span class="k">def</span> <span class="nf">render_html</span><span class="p">(</span><span class="n">file_location</span><span class="p">):</span>
@@ -116,7 +114,6 @@
     <span class="kn">import</span> <span class="nn">io</span>
     <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
     <span class="kn">import</span> <span class="nn">base64</span>
-    <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">base64_input</span><span class="p">))</span>
     <span class="nb">bytes</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">base64_input</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="nb">bytes</span><span class="p">))</span></div>
 
@@ -126,7 +123,6 @@
 <span class="sd">    :param base64: a base 64 encoded unicode string representing a png image</span>
 <span class="sd">    :param output_file: the path where the image will be saved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">base64_input</span><span class="p">))</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">b64toImage</span><span class="p">(</span><span class="n">base64_input</span><span class="p">)</span>
     <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span></div>
 
@@ -160,10 +156,7 @@
 
     <span class="k">def</span> <span class="nf">cast_html_to_png</span><span class="p">(</span><span class="n">file_location</span><span class="p">):</span>
         <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file://&quot;</span><span class="o">+</span><span class="n">file_location</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;file://&quot;</span><span class="o">+</span><span class="n">file_location</span><span class="p">)</span>
         <span class="n">b64</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;return cy.png()&#39;</span><span class="p">)</span>
-        <span class="c1">#cy.jpg()</span>
-        <span class="c1">#cy.json()</span>
         <span class="c1">#index is always 22</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">b64</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;base64,&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="s2">&quot;base64,&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">b64</span><span class="p">[</span><span class="n">index</span><span class="p">:]</span>
@@ -174,23 +167,17 @@
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">abspath</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;File : &quot;</span><span class="o">+</span><span class="n">f</span><span class="p">)</span>
+<span class="c1">#        print(&quot;File : &quot;+f)</span>
         <span class="n">b64image</span> <span class="o">=</span> <span class="n">cast_html_to_png</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 <span class="c1">#        print(b64image)</span>
-        <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b64image</span><span class="p">))</span>
         <span class="n">png_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b64image</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">png_images</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">png_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
         <span class="k">if</span> <span class="n">save</span> <span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">5</span> <span class="ow">and</span> <span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
             <span class="n">f</span> <span class="o">+=</span> <span class="s2">&quot;.png&quot;</span>
-            <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">png_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">save_png</span><span class="p">(</span><span class="n">png_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">f</span><span class="p">)</span>
-
     <span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
     <span class="n">xvfb</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">png_images</span></div>
@@ -378,6 +365,25 @@
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_template</span><span class="p">)</span>
     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
+
+<div class="viewcode-block" id="graph_sequence_to_gif"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.graph_sequence_to_gif">[docs]</a><span class="k">def</span> <span class="nf">graph_sequence_to_gif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">graph_list</span><span class="p">,</span> <span class="n">visual_config</span><span class="o">=</span><span class="n">default_option</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tmp_location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">uuid</span>
+    <span class="n">validate_config</span><span class="p">(</span><span class="n">visual_config</span><span class="p">)</span>
+
+    <span class="n">temp_files_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">G</span> <span class="ow">in</span> <span class="n">graph_list</span><span class="p">:</span>
+        <span class="n">temp_filename</span> <span class="o">=</span> <span class="n">tmp_location</span><span class="o">+</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+        <span class="n">networkx_to_cytoscape_html</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">visual_config</span><span class="p">)</span>
+        <span class="n">temp_files_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">)</span>
+
+    <span class="n">png_images_bytearrays</span> <span class="o">=</span> <span class="n">html_to_png</span><span class="p">(</span><span class="n">temp_files_list</span><span class="p">,</span><span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+
+    <span class="n">make_gif_from_png_base64</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">png_images_bytearrays</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">for</span> <span class="n">temp_file</span> <span class="ow">in</span> <span class="n">temp_files_list</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

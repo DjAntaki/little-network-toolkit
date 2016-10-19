@@ -67,19 +67,18 @@
 
 <dl class="function">
 <dt id="lntk.parser.networkx_to_csv">
-<code class="descclassname">lntk.parser.</code><code class="descname">networkx_to_csv</code><span class="sig-paren">(</span><em>G</em>, <em>node_csv_path</em>, <em>edge_csv_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#networkx_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.networkx_to_csv" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descclassname">lntk.parser.</code><code class="descname">networkx_to_csv</code><span class="sig-paren">(</span><em>G</em>, <em>node_csv_path</em>, <em>edge_csv_path</em>, <em>header=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/parser.html#networkx_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.parser.networkx_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate two csv from a networkx graph. The first one represents a list of nodes while the second represents a list of edges.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>G</strong> &#8211; </li>
-<li><strong>node_csv_path</strong> &#8211; </li>
-<li><strong>edge_csv_path</strong> &#8211; </li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>G</strong> &#8211; a networkx graph</li>
+<li><strong>node_csv_path</strong> &#8211; the path to the node csv output location</li>
+<li><strong>edge_csv_path</strong> &#8211; the path to the edge csv output location</li>
+<li><strong>header</strong> &#8211; If True, the generated csv will have a header.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
