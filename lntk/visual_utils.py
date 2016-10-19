@@ -1,4 +1,5 @@
 from lntk import analytics
+import time
 default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
@@ -118,6 +119,7 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
 
     def cast_html_to_png(file_location):
         browser.get("file://"+file_location)
+        time.sleep(1)
         b64 = browser.execute_script('return cy.png()')
         #index is always 22
         index = b64.index("base64,") + len("base64,")
