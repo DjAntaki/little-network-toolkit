@@ -5,10 +5,12 @@ python :
 addons: 
   firefox: latest
 
-build: "python setup.py build"
+#build: "python setup.py build"
 
 install:
-  - python setup.py install
+  - pip install -e .
   - npm install geckodriver
+#  - python setup.py install
+
 # command to run tests
 script: "nosetests lntk/tests/"
