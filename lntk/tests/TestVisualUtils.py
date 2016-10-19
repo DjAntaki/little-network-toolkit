@@ -1,8 +1,7 @@
 import unittest
-from selenium import webdriver
-from xvfbwrapper import Xvfb
+#from selenium import webdriver
+#from xvfbwrapper import Xvfb
 
-from lntk.scripts import nx_to_gif
 from lntk import visual_utils
 from lntk.datasets.generated import get_gnp_series
 import os
@@ -91,7 +90,7 @@ class TestGif(unittest.TestCase):
         teardown_remove_files(self.tmp_root+"test.gif")
 
     def test_make_gif(self):
-        nx_to_gif.graph_sequence_to_gif("lntk/tests/tmp/test.gif", self.graphs, tmp_location=self.tmp_root)
+        visual_utils.graph_sequence_to_gif("lntk/tests/tmp/test.gif", self.graphs, tmp_location=self.tmp_root)
 
 # class TestRenderer(unittest.TestCase):
 #     def test_render_html(self):
