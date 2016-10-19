@@ -5,7 +5,7 @@ A collection of scripts to import, save, manipulate and render undirected graph.
 ## Content
 
 - Parse csv to networkx and networkx to csv
-- Parse networkx graph to html file using layout functionnalities from cytoscape 2.7.10
+- Parse networkx graph to html file using networkx centrality measures and layout functionnalities from cytoscape 2.7.10.
 - Save a networkx graph to png
 - Can create a gif from a list of networkx graph
 
