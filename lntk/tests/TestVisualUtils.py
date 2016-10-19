@@ -22,7 +22,6 @@ class TestHTML(unittest.TestCase):
 
     def tearDown(self):
         #Check if it has been created first?
-        print(os.getcwd())
         teardown_remove_files(self.tmp_root+"test.html")
 
     def test_networkx_to_html(self):
@@ -62,7 +61,10 @@ class TestHTMLtoPNG(unittest.TestCase):
       #  return
         defopt = visual_utils.default_option
         from copy import deepcopy
-        options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["rectangle",]}# "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid"]}
+        options_to_test = {"node_size":["betweeness","closeness","connectivity"],"edge_width":["betweeness"],"shape":["rectangle",]}
+        #let's not make the test long for nothing
+
+      # "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid"]}
         for key,values in options_to_test.items():
             for value in values :
                 print("testing option "+str(key)+" with value "+str(value))
@@ -75,8 +77,16 @@ class TestHTMLtoPNG(unittest.TestCase):
                 from PIL.Image import Image
                 self.assertTrue(isinstance(im,Image))
 
+    def test_invalid_options(self):
 
-        teardown_remove_files([self.tmp_root + i for i in ("test.html",)])
+        invalid_inputs = {'layout':'qwe', 'node_size':'qwe','edge_width':'qwe',"shape":'qwe'}
+        defopt = visual_utils.default_option
+        from copy import deepcopy
+        for key, value in invalid_inputs.items():
+            opt = deepcopy(defopt)
+            opt[key] = value
+            self.assertRaises(AssertionError,visual_utils.networkx_to_cytoscape_html,self.tmp_root + "test.html", self.graphs[0], opt)
+
 
 class TestGif(unittest.TestCase):
     def setUp(self):
@@ -86,7 +96,6 @@ class TestGif(unittest.TestCase):
 
     def tearDown(self):
         #Check if it has been created first?
-        print(os.getcwd())
         teardown_remove_files(self.tmp_root+"test.gif")
 
     def test_make_gif(self):

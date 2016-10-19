@@ -3,26 +3,28 @@ default_option = {"layout": 'grid'}
 ALL_CYTOSCAPE_PRESET_LAYOUTS = ('grid','null','random','preset','circle','concentric','breadthfirst','cose')
 
 def validate_config(config):
-    #Todo
-    pass
-
-
-def reverse_gif(filename):
     """
-    unused.
-    taken from http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python
-    """
-    from PIL import Image, ImageSequence
-#    from images2gif import writeGif
-    from lntk.static.python.images2gif import writeGif
-    import sys, os
-    filename = sys.argv[1]
-    im = Image.open(filename)
-    original_duration = im.info['duration']
-    frames = [frame.copy() for frame in ImageSequence.Iterator(im)]
-    frames.reverse()
+    Validate that the configuration dictionnary is valid for the cases supported by this program.
 
-    writeGif("reverse_" + os.path.basename(filename), frames, duration=original_duration/1000.0, dither=0)
+    See tutorial or source for enumeration of all supported cases (It is quite straigtfoward I promise.)
+
+    :param config: a configuration dictionnary (potentially loaded from a json)
+    """
+    assert config["layout"] in ALL_CYTOSCAPE_PRESET_LAYOUTS
+
+    if "node_size" in config.keys():
+        assert config["node_size"] in ("betweeness", "closeness", "connectivity")
+
+    if "edge_width" in config.keys():
+        assert config["edge_width"] == "betweeness"
+
+    if "shape" in config.keys():
+        assert config["shape"] in ("rectangle", "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid")
+
+    if "background_opacity" in config.keys():
+        bo = float(config["background_opacity"])
+        assert bo >= 0.0 and bo <= 0.0
+
 
 def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
     """
@@ -34,7 +36,6 @@ def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
     :return:
     """
     from PIL import Image
-#    from images2gif import writeGif
     from lntk.static.python import images2gif
     image_list = []
 
@@ -83,6 +84,9 @@ def save_png(base64_input, output_file):
     :param base64: a base 64 encoded unicode string representing a png image
     :param output_file: the path where the image will be saved.
     """
+    if len(base64_input) == 1:
+        base64_input = base64_input[0]
+        assert type(base64_input) == unicode
     image = b64toImage(base64_input)
     image.save(output_file)
 
@@ -102,6 +106,7 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
     from selenium import webdriver
     from xvfbwrapper import Xvfb
     import os
+
 
     is_list = hasattr(filepaths, "__iter__")
     if not is_list:
@@ -129,15 +134,13 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
             f = os.path.join(abspath,f)
 #        print("File : "+f)
         b64image = cast_html_to_png(f)
-
-#        print(b64image)
         png_images.append(b64image)
-
         if save :
-            if len(f)>5 and f[-5:] == ".html":
+            if len(f) > 5 and f[-5:] == ".html":
                 f = f[:-5]
             f += ".png"
-            save_png(png_images[-1],f)
+            save_png(b64image,f)
+
     browser.quit()
     xvfb.stop()
     return png_images
@@ -266,9 +269,9 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
     """
     This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).
 
-    option is a dictionnary in which the key 'layout' must be present.
+    option is a dictionary in which the key 'layout' must be present.
 
-    - For now, all generated graph are undirected.
+    N.B. At the current state of implementation, all generated graph are undirected.
 
     :param graph: A networkx graph
     :param output_filename: the desired output location
@@ -276,14 +279,14 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
     :param verbose: print extra details if True.
     """
 
+    validate_config(options)
+
     style = _generate_stylesheet_cytoscape(graph, options)
 
     layout = _generate_layout_cytoscape(options)
 
     elements = _generate_element_list_cytoscape(graph, options,verbose)
 
-    import os
-    print(os.getcwd())
     cytoscape_library = open("./lntk/static/js/cytoscape.js-2.7.10/cytoscape.min.js",'r').read()
 
     # Set script path sur based on working directory?

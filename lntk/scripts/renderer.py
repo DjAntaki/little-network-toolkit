@@ -27,14 +27,16 @@ if __name__ == "__main__":
         config = vu.default_option
     else :
         import json
-        config = json.load(config)
+        config = json.load(open(config,'r'))
+        #I'm not sure its a great way to deal with encoding but it seems to do the trick.
+        config = {str(i): str(j) for i,j in config.items()}
         vu.validate_config(config)
 
     if out_type == "png":
         import uuid
         temp_file = "temp_"+str(uuid.uuid4())
         vu.networkx_to_cytoscape_html(temp_file, network, options=config)
-        b64input = vu.html_to_png([temp_file], width=1280, height=720, save=False)
+        b64input = vu.html_to_png(temp_file, width=1280, height=720, save=False)
         vu.save_png(b64input, out)
     elif out_type == "html":
         vu.networkx_to_cytoscape_html(out, network, options=config)
