@@ -12,11 +12,11 @@ if __name__=="__main__":
 
     parser.add_argument('--header', dest='header', action='store_true')
     parser.add_argument('--no-header', dest='header', action='store_false',help="CSVs do not have headers")
-    parser.set_defaults(feature=True)
+    parser.set_defaults(header=True)
 
 
     args = parser.parse_args()
-    print(args)
+   # print(args)
     node_list_csv, edge_list_csv = args.input
     out = args.output
     header = args.header
