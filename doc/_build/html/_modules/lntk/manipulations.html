@@ -62,22 +62,18 @@
             <span class="n">first</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">nodes_to_merge</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">first</span> <span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
                 <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_node_id</span><span class="p">,</span><span class="n">new_node_id</span><span class="p">,</span><span class="n">kwargs</span><span class="p">))</span>
                 <span class="n">edge_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
                 <span class="k">continue</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">first</span> <span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;do nothing&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">f</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">first</span> <span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
             <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">new_node_id</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
         <span class="k">else</span> <span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
             <span class="n">edge_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">new_node_id</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
 
         <span class="n">edge_to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">))</span>
@@ -92,13 +88,8 @@
     <span class="k">return</span>  <span class="n">G</span></div>
 
 <div class="viewcode-block" id="update_network_node_data"><a class="viewcode-back" href="../../manipulation.html#lntk.manipulations.update_network_node_data">[docs]</a><span class="k">def</span> <span class="nf">update_network_node_data</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">new_column_id</span><span class="p">,</span><span class="n">new_values_dict</span><span class="p">):</span>
-    <span class="c1">#nx.set_node_attributes(G,new_column_id,new_values_dict)</span>
-    <span class="c1">#return</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">new_values_dict</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
         <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">n</span><span class="p">,{</span><span class="n">new_column_id</span><span class="p">:</span> <span class="n">new_values_dict</span><span class="p">[</span><span class="n">n</span><span class="p">]})</span></div>
-<span class="c1">#        G[n].update({new_column_id:new_values_dict[n]})</span>
 
 <div class="viewcode-block" id="update_network_edge_data"><a class="viewcode-back" href="../../manipulation.html#lntk.manipulations.update_network_edge_data">[docs]</a><span class="k">def</span> <span class="nf">update_network_edge_data</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">new_column_id</span><span class="p">,</span><span class="n">new_values_dict</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>

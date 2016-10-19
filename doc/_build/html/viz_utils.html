@@ -62,13 +62,16 @@
 <dl class="function">
 <dt id="lntk.visual_utils._generate_layout_cytoscape">
 <code class="descclassname">lntk.visual_utils.</code><code class="descname">_generate_layout_cytoscape</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#_generate_layout_cytoscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils._generate_layout_cytoscape" title="Permalink to this definition">¶</a></dt>
-<dd><p>:param a dictionnary containing the key &#8220;layout&#8221; and</p>
+<dd><blockquote>
+<div>Private function. Generates layout for html file containing network.</div></blockquote>
+<p>:param a dictionnary containing the key &#8220;layout&#8221;</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="lntk.visual_utils._generate_stylesheet_cytoscape">
 <code class="descclassname">lntk.visual_utils.</code><code class="descname">_generate_stylesheet_cytoscape</code><span class="sig-paren">(</span><em>G</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#_generate_stylesheet_cytoscape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils._generate_stylesheet_cytoscape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles the layout and style options. For further information, see documentation.</p>
+<dd><p>Private function. Handles the style options.</p>
+<p>For further information on valid style.</p>
 <p>:param G : a networkx graph instance.
 :param options : a dictionnary indicating the layout and style to apply.</p>
 </dd></dl>
@@ -83,8 +86,23 @@
 
 <dl class="function">
 <dt id="lntk.visual_utils.graph_sequence_to_gif">
-<code class="descclassname">lntk.visual_utils.</code><code class="descname">graph_sequence_to_gif</code><span class="sig-paren">(</span><em>output_filename</em>, <em>graph_list</em>, <em>visual_config={'layout': 'grid'}</em>, <em>duration=2</em>, <em>tmp_location=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#graph_sequence_to_gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.graph_sequence_to_gif" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">lntk.visual_utils.</code><code class="descname">graph_sequence_to_gif</code><span class="sig-paren">(</span><em>output_filename</em>, <em>graph_list</em>, <em>display_config={'layout': 'grid'}</em>, <em>duration=2</em>, <em>tmp_location=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#graph_sequence_to_gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.graph_sequence_to_gif" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>output_filename</strong> &#8211; The git output location</li>
+<li><strong>graph_list</strong> &#8211; A list of networkx graph</li>
+<li><strong>display_config</strong> &#8211; a dictionnary containing layout and style configuration</li>
+<li><strong>duration</strong> &#8211; The duration of each frame where 1 frame = 1 networkx</li>
+<li><strong>tmp_location</strong> &#8211; the location in which temporary html and png will be saved. Those should be automatically deleted afterward.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="lntk.visual_utils.html_to_png">
@@ -147,10 +165,8 @@
 <dt id="lntk.visual_utils.networkx_to_cytoscape_html">
 <code class="descclassname">lntk.visual_utils.</code><code class="descname">networkx_to_cytoscape_html</code><span class="sig-paren">(</span><em>output_filename</em>, <em>graph</em>, <em>options={'layout': 'grid'}</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#networkx_to_cytoscape_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.networkx_to_cytoscape_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).</p>
-<p>option is a dictionnary in which the key &#8216;layout&#8217; must be present.</p>
-<ul class="simple">
-<li>For now, all generated graph are undirected.</li>
-</ul>
+<p>option is a dictionary in which the key &#8216;layout&#8217; must be present.</p>
+<p>N.B. At the current state of implementation, all generated graph are undirected.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -174,13 +190,6 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="lntk.visual_utils.reverse_gif">
-<code class="descclassname">lntk.visual_utils.</code><code class="descname">reverse_gif</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#reverse_gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.reverse_gif" title="Permalink to this definition">¶</a></dt>
-<dd><p>unused.
-taken from <a class="reference external" href="http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python">http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python</a></p>
-</dd></dl>
-
-<dl class="function">
 <dt id="lntk.visual_utils.save_png">
 <code class="descclassname">lntk.visual_utils.</code><code class="descname">save_png</code><span class="sig-paren">(</span><em>base64_input</em>, <em>output_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#save_png"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.save_png" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -200,7 +209,17 @@ taken from <a class="reference external" href="http://stackoverflow.com/question
 <dl class="function">
 <dt id="lntk.visual_utils.validate_config">
 <code class="descclassname">lntk.visual_utils.</code><code class="descname">validate_config</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lntk/visual_utils.html#validate_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lntk.visual_utils.validate_config" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Validate that the configuration dictionnary is valid for the cases supported by this program.</p>
+<p>See tutorial or source for enumeration of all supported cases (It is quite straigtfoward I promise.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> &#8211; a configuration dictionnary (potentially loaded from a json)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

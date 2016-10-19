@@ -43,26 +43,28 @@
 <span class="n">ALL_CYTOSCAPE_PRESET_LAYOUTS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span><span class="s1">&#39;null&#39;</span><span class="p">,</span><span class="s1">&#39;random&#39;</span><span class="p">,</span><span class="s1">&#39;preset&#39;</span><span class="p">,</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span><span class="s1">&#39;concentric&#39;</span><span class="p">,</span><span class="s1">&#39;breadthfirst&#39;</span><span class="p">,</span><span class="s1">&#39;cose&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="validate_config"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.validate_config">[docs]</a><span class="k">def</span> <span class="nf">validate_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-    <span class="c1">#Todo</span>
-    <span class="k">pass</span></div>
-
-
-<div class="viewcode-block" id="reverse_gif"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.reverse_gif">[docs]</a><span class="k">def</span> <span class="nf">reverse_gif</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    unused.</span>
-<span class="sd">    taken from http://stackoverflow.com/questions/753190/programmatically-generate-video-or-animated-gif-in-python</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageSequence</span>
-<span class="c1">#    from images2gif import writeGif</span>
-    <span class="kn">from</span> <span class="nn">lntk.static.python.images2gif</span> <span class="kn">import</span> <span class="n">writeGif</span>
-    <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">original_duration</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
-    <span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">frame</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">ImageSequence</span><span class="o">.</span><span class="n">Iterator</span><span class="p">(</span><span class="n">im</span><span class="p">)]</span>
-    <span class="n">frames</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="sd">    Validate that the configuration dictionnary is valid for the cases supported by this program.</span>
 
-    <span class="n">writeGif</span><span class="p">(</span><span class="s2">&quot;reverse_&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">frames</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">original_duration</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">dither</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+<span class="sd">    See tutorial or source for enumeration of all supported cases (It is quite straigtfoward I promise.)</span>
+
+<span class="sd">    :param config: a configuration dictionnary (potentially loaded from a json)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;layout&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">ALL_CYTOSCAPE_PRESET_LAYOUTS</span>
+
+    <span class="k">if</span> <span class="s2">&quot;node_size&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;node_size&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;betweeness&quot;</span><span class="p">,</span> <span class="s2">&quot;closeness&quot;</span><span class="p">,</span> <span class="s2">&quot;connectivity&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;edge_width&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edge_width&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;betweeness&quot;</span>
+
+    <span class="k">if</span> <span class="s2">&quot;shape&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">assert</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;rectangle&quot;</span><span class="p">,</span> <span class="s2">&quot;roundrectangle&quot;</span><span class="p">,</span> <span class="s2">&quot;ellipse&quot;</span><span class="p">,</span> <span class="s2">&quot;triangle&quot;</span><span class="p">,</span> <span class="s2">&quot;pentagon&quot;</span><span class="p">,</span> <span class="s2">&quot;hexagon&quot;</span><span class="p">,</span> <span class="s2">&quot;heptagon&quot;</span><span class="p">,</span> <span class="s2">&quot;octagon&quot;</span><span class="p">,</span> <span class="s2">&quot;star&quot;</span><span class="p">,</span> <span class="s2">&quot;diamond&quot;</span><span class="p">,</span> <span class="s2">&quot;vee&quot;</span><span class="p">,</span> <span class="s2">&quot;rhomboid&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#    if &quot;background_opacity&quot; in config.keys():</span>
+<span class="c1">#        bo = float(config[&quot;background_opacity&quot;])</span>
+<span class="c1">#        assert bo &gt;= 0.0 and bo &lt;= 0.0</span>
+
 
 <div class="viewcode-block" id="make_gif_from_filepaths"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.make_gif_from_filepaths">[docs]</a><span class="k">def</span> <span class="nf">make_gif_from_filepaths</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">png_filepath_list</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -74,7 +76,6 @@
 <span class="sd">    :return:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="c1">#    from images2gif import writeGif</span>
     <span class="kn">from</span> <span class="nn">lntk.static.python</span> <span class="kn">import</span> <span class="n">images2gif</span>
     <span class="n">image_list</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -143,6 +144,7 @@
     <span class="kn">from</span> <span class="nn">xvfbwrapper</span> <span class="kn">import</span> <span class="n">Xvfb</span>
     <span class="kn">import</span> <span class="nn">os</span>
 
+
     <span class="n">is_list</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_list</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span>
@@ -169,15 +171,13 @@
             <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">abspath</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 <span class="c1">#        print(&quot;File : &quot;+f)</span>
         <span class="n">b64image</span> <span class="o">=</span> <span class="n">cast_html_to_png</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="c1">#        print(b64image)</span>
         <span class="n">png_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b64image</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">save</span> <span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">5</span> <span class="ow">and</span> <span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.html&quot;</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
             <span class="n">f</span> <span class="o">+=</span> <span class="s2">&quot;.png&quot;</span>
-            <span class="n">save_png</span><span class="p">(</span><span class="n">png_images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">save_png</span><span class="p">(</span><span class="n">b64image</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+
     <span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
     <span class="n">xvfb</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">png_images</span></div>
@@ -188,7 +188,9 @@
 
 <div class="viewcode-block" id="_generate_stylesheet_cytoscape"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils._generate_stylesheet_cytoscape">[docs]</a><span class="k">def</span> <span class="nf">_generate_stylesheet_cytoscape</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Handles the layout and style options. For further information, see documentation.</span>
+<span class="sd">    Private function. Handles the style options.</span>
+
+<span class="sd">    For further information on valid style.</span>
 
 <span class="sd">    :param G : a networkx graph instance.</span>
 <span class="sd">    :param options : a dictionnary indicating the layout and style to apply.</span>
@@ -237,23 +239,25 @@
         <span class="n">style</span> <span class="o">+=</span> <span class="n">edge_style</span>
 
 
-    <span class="k">if</span> <span class="s2">&quot;background-opacity&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">extra_style</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;,</span>
-<span class="s2">        {</span>
-<span class="s2">          selector: &#39;:parent&#39;,</span>
-<span class="s2">          style: {</span>
-<span class="s2">            &#39;background-opacity&#39;: {opacity}</span>
-<span class="s2">          }</span>
-<span class="s2">        }&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">opacity</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;background-opacity&quot;</span><span class="p">])</span>
+  <span class="c1">#  if &quot;background-opacity&quot; in options.keys():</span>
+    <span class="n">extra_style</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;,</span>
+<span class="s2">    {</span>
+<span class="s2">      selector: &#39;:parent&#39;,</span>
+<span class="s2">      style: {</span>
+<span class="s2">        &#39;background-opacity&#39;: 1</span>
+<span class="s2">      }</span>
+<span class="s2">    }&quot;&quot;&quot;</span>
+            <span class="c1">#.format(opacity=options[&quot;background-opacity&quot;])</span>
 
-        <span class="n">style</span> <span class="o">+=</span> <span class="n">extra_style</span>
+    <span class="n">style</span> <span class="o">+=</span> <span class="n">extra_style</span>
 
     <span class="k">return</span> <span class="n">style</span></div>
 
 
 <div class="viewcode-block" id="_generate_layout_cytoscape"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils._generate_layout_cytoscape">[docs]</a><span class="k">def</span> <span class="nf">_generate_layout_cytoscape</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :param a dictionnary containing the key &quot;layout&quot; and</span>
+<span class="sd">        Private function. Generates layout for html file containing network.</span>
+<span class="sd">    :param a dictionnary containing the key &quot;layout&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="s2">&quot;layout&quot;</span> <span class="ow">in</span> <span class="n">options</span>
     <span class="n">opt</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;layout&quot;</span><span class="p">]</span>
@@ -306,9 +310,9 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This functions takes in input a networkx graph and a dictionnary of options and creates a html file containing the graph rendered according to the given options and the cytoscape.js library (i.e. self-contained).</span>
 
-<span class="sd">    option is a dictionnary in which the key &#39;layout&#39; must be present.</span>
+<span class="sd">    option is a dictionary in which the key &#39;layout&#39; must be present.</span>
 
-<span class="sd">    - For now, all generated graph are undirected.</span>
+<span class="sd">    N.B. At the current state of implementation, all generated graph are undirected.</span>
 
 <span class="sd">    :param graph: A networkx graph</span>
 <span class="sd">    :param output_filename: the desired output location</span>
@@ -316,14 +320,14 @@
 <span class="sd">    :param verbose: print extra details if True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">validate_config</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
     <span class="n">style</span> <span class="o">=</span> <span class="n">_generate_stylesheet_cytoscape</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
     <span class="n">layout</span> <span class="o">=</span> <span class="n">_generate_layout_cytoscape</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
     <span class="n">elements</span> <span class="o">=</span> <span class="n">_generate_element_list_cytoscape</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span><span class="n">verbose</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
     <span class="n">cytoscape_library</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./lntk/static/js/cytoscape.js-2.7.10/cytoscape.min.js&quot;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
     <span class="c1"># Set script path sur based on working directory?</span>
@@ -366,14 +370,22 @@
     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="graph_sequence_to_gif"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.graph_sequence_to_gif">[docs]</a><span class="k">def</span> <span class="nf">graph_sequence_to_gif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">graph_list</span><span class="p">,</span> <span class="n">visual_config</span><span class="o">=</span><span class="n">default_option</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tmp_location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="graph_sequence_to_gif"><a class="viewcode-back" href="../../viz_utils.html#lntk.visual_utils.graph_sequence_to_gif">[docs]</a><span class="k">def</span> <span class="nf">graph_sequence_to_gif</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">graph_list</span><span class="p">,</span> <span class="n">display_config</span><span class="o">=</span><span class="n">default_option</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tmp_location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param output_filename: The git output location</span>
+<span class="sd">    :param graph_list: A list of networkx graph</span>
+<span class="sd">    :param display_config: a dictionnary containing layout and style configuration</span>
+<span class="sd">    :param duration: The duration of each frame where 1 frame = 1 networkx</span>
+<span class="sd">    :param tmp_location: the location in which temporary html and png will be saved. Those should be automatically deleted afterward.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">uuid</span>
-    <span class="n">validate_config</span><span class="p">(</span><span class="n">visual_config</span><span class="p">)</span>
+    <span class="n">validate_config</span><span class="p">(</span><span class="n">display_config</span><span class="p">)</span>
 
     <span class="n">temp_files_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">G</span> <span class="ow">in</span> <span class="n">graph_list</span><span class="p">:</span>
         <span class="n">temp_filename</span> <span class="o">=</span> <span class="n">tmp_location</span><span class="o">+</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
-        <span class="n">networkx_to_cytoscape_html</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">visual_config</span><span class="p">)</span>
+        <span class="n">networkx_to_cytoscape_html</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">display_config</span><span class="p">)</span>
         <span class="n">temp_files_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">)</span>
 
     <span class="n">png_images_bytearrays</span> <span class="o">=</span> <span class="n">html_to_png</span><span class="p">(</span><span class="n">temp_files_list</span><span class="p">,</span><span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
