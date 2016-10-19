@@ -9,13 +9,11 @@ if __name__ == "__main__":
                         help='The path to the network in input. File in input must be binary-writted pickled networkx instance.' )
     parser.add_argument('output', metavar='o', type=str,
                         help='The desired output location.')
-    parser.add_argument('output_type',metavar='t',type=str ,default='png',
-                        help="The desired output type. Either 'html' or 'png'.")
+    parser.add_argument('output_type',metavar='t',type=str ,default='png',help="The desired output type. Either 'html' or 'png'.")
 
     parser.add_argument('configuration', metavar='c', type=str, default=None,nargs='?', help='The path to the layout and style configuration json file.')
 
     args = parser.parse_args()
-#    print(args)
 
     inp, out = args.input, args.output
     config, out_type = args.configuration,  args.output_type
@@ -33,11 +31,15 @@ if __name__ == "__main__":
         vu.validate_config(config)
 
     if out_type == "png":
+        import os
         import uuid
         temp_file = "temp_"+str(uuid.uuid4())
         vu.networkx_to_cytoscape_html(temp_file, network, options=config)
         b64input = vu.html_to_png(temp_file, width=1280, height=720, save=False)
-        vu.save_png(b64input, out)
+        vu.save_png(b64input[0], out)
+
+        os.remove(temp_file)
+
     elif out_type == "html":
         vu.networkx_to_cytoscape_html(out, network, options=config)
     else :

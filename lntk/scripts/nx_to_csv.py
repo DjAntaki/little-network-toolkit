@@ -9,7 +9,11 @@ if __name__=="__main__":
                         help='The path to a pickled networkx graph.' )
     parser.add_argument('output', metavar='o', type=str, nargs=2,
                         help='The desired outputs location. Will save two csv. The first one is the node list and the second is the edge list. ')
-    parser.add_argument('--header',dest='header', type=bool, default=True, help="Boolean value representing the presence or absence of a header in the generated csv. Default is True.")
+
+    parser.add_argument('--header', dest='header', action='store_true')
+    parser.add_argument('--no-header', dest='header', action='store_false',help="CSVs will be generated without header.")
+    parser.set_defaults(feature=True)
+
     args = parser.parse_args()
     inp = args.input
     node_list_csv, edge_list_csv = args.output

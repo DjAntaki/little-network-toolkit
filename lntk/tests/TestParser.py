@@ -17,12 +17,13 @@ def teardown_remove_files(filepaths):
 class CSV_parse_test(unittest.TestCase):
     def setUp(self):
         self.G = nx.generators.classic.complete_graph(10)
+        self.tmp_root = os.getcwd() + "/lntk/tests/tmp/"
 
     def tearDown(self):
-        teardown_remove_files(["test_node_csv","test_edges_csv"])
+        teardown_remove_files([self.tmp_root+i for i in ("test_node_csv","test_edges_csv")])
 
     def test_back_and_forth(self):
-        ncsv, ecsv = "test_node_csv","test_edges_csv"
+        ncsv, ecsv = self.tmp_root+"test_node_csv",self.tmp_root+"test_edges_csv"
 
         parser.networkx_to_csv(self.G, ncsv, ecsv)
         H = parser.csv_to_networkx(ncsv, ecsv)

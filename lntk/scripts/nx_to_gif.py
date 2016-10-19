@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 from lntk.visual_utils import default_option, validate_config, graph_sequence_to_gif
 
 if __name__ == "__main__":
@@ -28,4 +29,6 @@ if __name__ == "__main__":
         config = json.load(open(config,'r'))
         validate_config(config)
 
-    graph_sequence_to_gif(out, network_list, config)
+    tmp = os.getcwd()
+
+    graph_sequence_to_gif(out, network_list, config,tmp_location=tmp)

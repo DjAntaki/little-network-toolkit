@@ -21,9 +21,9 @@ def validate_config(config):
     if "shape" in config.keys():
         assert config["shape"] in ("rectangle", "roundrectangle", "ellipse", "triangle", "pentagon", "hexagon", "heptagon", "octagon", "star", "diamond", "vee", "rhomboid")
 
-    if "background_opacity" in config.keys():
-        bo = float(config["background_opacity"])
-        assert bo >= 0.0 and bo <= 0.0
+#    if "background_opacity" in config.keys():
+#        bo = float(config["background_opacity"])
+#        assert bo >= 0.0 and bo <= 0.0
 
 
 def make_gif_from_filepaths(output_filename, png_filepath_list, duration=2):
@@ -84,9 +84,6 @@ def save_png(base64_input, output_file):
     :param base64: a base 64 encoded unicode string representing a png image
     :param output_file: the path where the image will be saved.
     """
-    if len(base64_input) == 1:
-        base64_input = base64_input[0]
-        assert type(base64_input) == unicode
     image = b64toImage(base64_input)
     image.save(output_file)
 
@@ -151,7 +148,9 @@ def html_to_png(filepaths, width=1280, height=720,save=False):
 
 def _generate_stylesheet_cytoscape(G, options):
     """
-    Handles the layout and style options. For further information, see documentation.
+    Private function. Handles the style options.
+
+    For further information on valid style.
 
     :param G : a networkx graph instance.
     :param options : a dictionnary indicating the layout and style to apply.
@@ -200,23 +199,25 @@ def _generate_stylesheet_cytoscape(G, options):
         style += edge_style
 
 
-    if "background-opacity" in options.keys():
-        extra_style = """,
-        {
-          selector: ':parent',
-          style: {
-            'background-opacity': {opacity}
-          }
-        }""".format(opacity=options["background-opacity"])
+  #  if "background-opacity" in options.keys():
+    extra_style = """,
+    {
+      selector: ':parent',
+      style: {
+        'background-opacity': 1
+      }
+    }"""
+            #.format(opacity=options["background-opacity"])
 
-        style += extra_style
+    style += extra_style
 
     return style
 
 
 def _generate_layout_cytoscape(options):
     """
-    :param a dictionnary containing the key "layout" and
+        Private function. Generates layout for html file containing network.
+    :param a dictionnary containing the key "layout"
     """
     assert "layout" in options
     opt = options["layout"]
@@ -329,14 +330,22 @@ def networkx_to_cytoscape_html(output_filename, graph, options=default_option, v
     f.close()
 
 
-def graph_sequence_to_gif(output_filename, graph_list, visual_config=default_option, duration=2, tmp_location=""):
+def graph_sequence_to_gif(output_filename, graph_list, display_config=default_option, duration=2, tmp_location=""):
+    """
+
+    :param output_filename: The git output location
+    :param graph_list: A list of networkx graph
+    :param display_config: a dictionnary containing layout and style configuration
+    :param duration: The duration of each frame where 1 frame = 1 networkx
+    :param tmp_location: the location in which temporary html and png will be saved. Those should be automatically deleted afterward.
+    """
     import uuid
-    validate_config(visual_config)
+    validate_config(display_config)
 
     temp_files_list = []
     for G in graph_list:
         temp_filename = tmp_location+ uuid.uuid4().hex
-        networkx_to_cytoscape_html(temp_filename, G, visual_config)
+        networkx_to_cytoscape_html(temp_filename, G, display_config)
         temp_files_list.append(temp_filename)
 
     png_images_bytearrays = html_to_png(temp_files_list,save=False)

@@ -101,7 +101,8 @@ The display configuration is a json that defines layout and style of the graph. 
 In that sense, the following is a valid display configuration :
 
     {'layout':'cose',
-     'node_size':'betweeness'}
+     'node_size':'connectivity',
+     'edge_size':'betweeness'}
 
 ## Usages
 
@@ -137,12 +138,12 @@ The outputed csv will have a header.
 
 #### networkx to html
 
-    lntk-renderer <networkx_input_file> <html_output_path> [<display_config_path>]
+    lntk-renderer <networkx_input_file> <html_output_path> <display_config_path>
 
 #### networkx to png
 
-    lntk-renderer <networkx_input_file> <png_output_path> [<display_config_path>]
+    lntk-renderer <networkx_input_file> <png_output_path> <display_config_path>
 
 #### List of networkx graph to gif
 
-    lntk-nx_to_gif <networkx_file1> <networkx_file2> <networkx_file3> <output_file>.gif [-c <display_config_path>]
+    lntk-nx_to_gif <networkx_file1> <networkx_file2> <networkx_file3> <git_output_path> <display_config_path>

@@ -36,16 +36,16 @@ class CSV_parse_test(unittest.TestCase):
         self.assertTrue(nx.is_isomorphic(self.G, H, edge_match=em))
 
     def test_cmdline_back_and_forth_with_header(self):
-        return
-        pickle.dump(self.G, open("test_out.nx", 'wb'))
+        for h in ("--header","--no-header"):
+            pickle.dump(self.G, open("test_out.nx", 'wb'))
 
-        su.check_call(["lntk-nx_to_csv", "test_out.nx", "test_nodes_csv", "test_edges_csv"])
+            su.check_call(["lntk-nx_to_csv", "test_out.nx", "test_nodes_csv", "test_edges_csv",h])
 
-        su.check_call(["lntk-csv_to_nx", "test_nodes_csv", "test_edges_csv", "test_out.nx"])
-        H = pickle.load(open("test_out.nx", 'rb'))
+            su.check_call(["lntk-csv_to_nx", "test_nodes_csv", "test_edges_csv", "test_out.nx",h])
+            H = pickle.load(open("test_out.nx", 'rb'))
 
-        em = iso.numerical_edge_match('weight', 1)
-        self.assertTrue(nx.is_isomorphic(self.G, H, edge_match=em))
+            em = iso.numerical_edge_match('weight', 1)
+            self.assertTrue(nx.is_isomorphic(self.G, H, edge_match=em))
 
 class TestGif(unittest.TestCase):
     def setUp(self):
@@ -107,20 +107,5 @@ class TestRenderer(unittest.TestCase):
                 opt[key] = value
                 json.dump(opt, open(self.tmp_root + "test.js", 'w'))
                 su.check_call(["lntk-renderer"] + [self.tmp_root + x for x in ("test.nx", "out.png")] + ["png", self.tmp_root + "test.js"])
-                Image.open(open(self.tmp_root + 'out.png', 'rb'))
-
-    def test_edge_betweeness(self):
-
-        options_to_test = {"edge_width": ["betweeness"]}
-
-        for key, values in options_to_test.items():
-            for value in values:
-                print("testing option " + str(key) + " with value " + str(value))
-                opt = deepcopy(defopt)
-                opt[key] = value
-                json.dump(opt, open(self.tmp_root + "test.js", 'w'))
-
-                su.check_call(["lntk-renderer"] + [self.tmp_root + x for x in ("test.nx", "out.png")] + ["png",
-                                                                                                         self.tmp_root + "test.js"])
                 Image.open(open(self.tmp_root + 'out.png', 'rb'))
 
